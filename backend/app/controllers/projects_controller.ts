@@ -17,6 +17,8 @@ export default class ProjectsController {
       const projects = await Project.query()
         .where('manager_id', user.id)
         .orderBy(pg.column, pg.direction)
+        .preload('employees')
+        .preload('manager')
         .paginate(pg.page ?? 1, pg.limit ?? 10)
       return projects.toJSON()
     }
@@ -65,7 +67,11 @@ export default class ProjectsController {
    * Show individual record
    */
   async show({ bouncer, params }: HttpContext) {
-    const project = await Project.findOrFail(params.id)
+    const project = await Project.query()
+      .where('id', params.id)
+      .preload('employees')
+      .preload('manager')
+      .firstOrFail()
     await bouncer.with('ProjectPolicy').authorize('view', project)
     return project
   }

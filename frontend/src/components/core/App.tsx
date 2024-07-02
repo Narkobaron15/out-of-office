@@ -1,8 +1,8 @@
 import './css/App.css'
 import {Route, Routes} from "react-router-dom";
+import Layout from "./Layout.tsx";
 
-function App() {
-
+export default function App() {
     return (
         <Routes>
             <Route path="/" element={<Layout/>}>
@@ -25,5 +25,3 @@ function App() {
         </Routes>
     )
 }
-
-export default App

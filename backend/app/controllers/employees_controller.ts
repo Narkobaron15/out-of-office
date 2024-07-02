@@ -15,6 +15,7 @@ export default class EmployeesController {
     const employees = await Employee.query()
       .where('partner_id', user.id)
       .orderBy(pg.column, pg.direction)
+      .preload('projects')
       .paginate(pg.page ?? 1, pg.limit ?? 10)
 
     return employees.toJSON()
@@ -25,7 +26,10 @@ export default class EmployeesController {
    */
   async show({ bouncer, params }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('view')
-    return await Employee.findOrFail(params.id)
+    return await Employee.query()
+      .where('id', params.id)
+      .preload('projects')
+      .firstOrFail()
   }
 
   /**

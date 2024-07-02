@@ -15,6 +15,8 @@ export default class ApprovalRequestsController {
     const requests = await ApprovalRequest.query()
       .where('approver_id', user.id)
       .orderBy(pg.column, pg.direction)
+      .preload('leaveRequest')
+      .preload('approver')
       .paginate(pg.page ?? 1, pg.limit ?? 10)
 
     return requests.toJSON()
@@ -38,7 +40,11 @@ export default class ApprovalRequestsController {
    */
   async show({ bouncer, params }: HttpContext) {
     await bouncer.with('ApprovalRequestPolicy').authorize('open')
-    return await ApprovalRequest.findOrFail(params.id)
+    return await ApprovalRequest.query()
+      .where('id', params.id)
+      .preload('leaveRequest')
+      .preload('approver')
+      .firstOrFail()
   }
 
   /**

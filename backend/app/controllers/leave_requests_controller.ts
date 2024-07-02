@@ -11,6 +11,7 @@ export default class LeaveRequestsController {
     const pg = request.qs() as Pagination
     const requests = await LeaveRequest.query()
       .orderBy(pg.column, pg.direction)
+      .preload('employee')
       .paginate(pg.page ?? 1, pg.limit ?? 10)
     return requests.toJSON()
   }
@@ -32,7 +33,10 @@ export default class LeaveRequestsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return await LeaveRequest.findOrFail(params.id)
+    return await LeaveRequest.query()
+      .where('id', params.id)
+      .preload('employee')
+      .firstOrFail()
   }
 
   /**
