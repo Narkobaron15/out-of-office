@@ -16,7 +16,7 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 /**
  * Employee model
  */
-export default class User extends compose(BaseModel, AuthFinder) {
+export default class Employee extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
   declare id: UUID
 
@@ -38,8 +38,8 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare status: boolean
 
-  @hasOne(() => User)
-  declare partner: HasOne<typeof User>
+  @hasOne(() => Employee)
+  declare partner: HasOne<typeof Employee>
 
   @column()
   declare daysOff: number

@@ -10,36 +10,36 @@ alter table if exists approval_requests
 drop constraint FK_approval_requests_leave_requests;
 
 alter table if exists leave_requests
-drop constraint FK_users_leave_requests;
+drop constraint FK_employees_leave_requests;
 
-alter table if exists users
-drop constraint fk_users_partner;
+alter table if exists employees
+drop constraint fk_employees_partner;
 
 drop table if exists projects;
 drop table if exists approval_requests;
 drop table if exists leave_requests;
-drop table if exists users;
+drop table if exists employees;
 
 commit;
 
 begin;
 
-create table users (
+create table employees (
 	id uuid primary key default gen_random_uuid(),
 	full_name text not null,
 	subdivision varchar(100) not null,
 	position varchar(100) not null,
 	status bit not null,
-	days_off bigint not null,
+	days_off bigint not null check(days_off >= 0),
 	picture varchar(1000),
 	partner_id uuid,
 	
 	created_at timestamp not null,
 	updated_at timestamp,
 	
-	constraint fk_users_partner
+	constraint fk_employees_partner
 	foreign key(partner_id)
-	references users(id)
+	references employees(id)
 );
 
 create table leave_requests(
@@ -54,9 +54,9 @@ create table leave_requests(
 	created_at timestamp not null,
 	updated_at timestamp,
 	
-	constraint FK_users_leave_requests
+	constraint FK_employees_leave_requests
 	foreign key(employee_id)
-	references users(id)
+	references employees(id)
 	on delete cascade
 );
 
@@ -71,7 +71,7 @@ create table approval_requests(
 	
 	constraint FK_approval_requests_approver
 	foreign key(approver_id)
-	references users(id)
+	references employees(id)
 	on delete cascade,
 	
 	constraint FK_approval_requests_leave_requests
@@ -95,7 +95,7 @@ create table projects(
 	
 	constraint FK_projects_manager
 	foreign key(manager_id)
-	references users(id)
+	references employees(id)
 	on delete cascade
 );
 

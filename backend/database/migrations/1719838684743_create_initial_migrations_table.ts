@@ -7,7 +7,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
   async up() {
-    this.schema.createTable('users', (table) => {
+    this.schema.createTable('employees', (table) => {
       table.uuid('id').primary()
       table.string('email', 255).notNullable().unique()
       table.string('password', 500).notNullable()
@@ -17,7 +17,7 @@ export default class extends BaseSchema {
       table.boolean('status').notNullable()
       table.integer('days_off').notNullable().checkPositive()
       table.string('picture_url').nullable()
-      table.uuid('partner_id').references('id').inTable('users').onDelete('CASCADE').nullable()
+      table.uuid('partner_id').references('id').inTable('employees').onDelete('CASCADE').nullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
@@ -25,7 +25,7 @@ export default class extends BaseSchema {
 
     this.schema.createTable('leave_requests', (table) => {
       table.uuid('id').primary()
-      table.uuid('employee_id').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('employee_id').references('id').inTable('employees').onDelete('CASCADE')
       table.enum('absence_reason', Object.keys(AbsenceReason)).notNullable()
       table.date('start').notNullable()
       table.date('end').notNullable()
@@ -38,7 +38,7 @@ export default class extends BaseSchema {
 
     this.schema.createTable('approval_requests', (table) => {
       table.uuid('id').primary()
-      table.uuid('approver_id').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('approver_id').references('id').inTable('employees').onDelete('CASCADE')
       table.uuid('leave_request_id').references('id').inTable('leave_requests').onDelete('CASCADE')
       table.enum('status', Object.keys(Status)).notNullable()
       
@@ -52,7 +52,7 @@ export default class extends BaseSchema {
       table.enum('type', Object.keys(ProjectType)).notNullable()
       table.date('start').notNullable()
       table.date('end').notNullable()
-      table.uuid('manager_id').references('id').inTable('users').onDelete('CASCADE')
+      table.uuid('manager_id').references('id').inTable('employees').onDelete('CASCADE')
       table.text('comment').nullable()
       table.boolean('status').notNullable()
       
@@ -65,6 +65,6 @@ export default class extends BaseSchema {
     this.schema.dropTable('projects')
     this.schema.dropTable('approval_requests')
     this.schema.dropTable('leave_requests')
-    this.schema.dropTable('users')
+    this.schema.dropTable('employees')
   }
 }
