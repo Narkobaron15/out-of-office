@@ -7,11 +7,11 @@ import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Position from '#types/position'
 import type { UUID } from 'node:crypto'
 import Subdivision from '#types/subdivision'
-import Project from "#models/project";
+import Project from '#models/project'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
-  passwordColumnName: 'password'
+  passwordColumnName: 'password',
 })
 
 /**
@@ -59,7 +59,7 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
     localKey: 'id',
     relatedKey: 'id',
     pivotForeignKey: 'employee_id',
-    pivotRelatedForeignKey: 'project_id'
+    pivotRelatedForeignKey: 'project_id',
   })
   declare projects: ManyToMany<typeof Project>
 }

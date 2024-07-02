@@ -1,7 +1,7 @@
 import { BasePolicy } from '@adonisjs/bouncer'
 import { AuthorizerResponse } from '@adonisjs/bouncer/types'
-import Employee from "#models/employee";
-import Position from "#types/position";
+import Employee from '#models/employee'
+import Position from '#types/position'
 
 export default class LeaveRequestPolicy extends BasePolicy {
   open(user: Employee): AuthorizerResponse {

@@ -8,6 +8,10 @@ export default class ApprovalRequestPolicy extends BasePolicy {
     return user.role !== Position.EMPLOYEE
   }
 
+  create(user: Employee): AuthorizerResponse {
+    return user.role !== Position.EMPLOYEE
+  }
+
   approve(user: Employee): AuthorizerResponse {
     return user.role !== Position.EMPLOYEE
   }
