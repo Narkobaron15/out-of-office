@@ -8,7 +8,7 @@ import { BaseSchema } from '@adonisjs/lucid/schema'
 export default class extends BaseSchema {
   async up() {
     this.schema.createTable('employees', (table) => {
-      table.uuid('id').primary()
+      table.uuid('id').primary().index()
       table.string('email', 255).notNullable().unique()
       table.string('password', 500).notNullable()
       table.string('full_name', 180).notNullable()
@@ -24,7 +24,7 @@ export default class extends BaseSchema {
     })
 
     this.schema.createTable('leave_requests', (table) => {
-      table.uuid('id').primary()
+      table.uuid('id').primary().index()
       table.uuid('employee_id').references('id').inTable('employees').onDelete('CASCADE')
       table.enum('absence_reason', Object.keys(AbsenceReason)).notNullable()
       table.date('start').notNullable()
@@ -37,7 +37,7 @@ export default class extends BaseSchema {
     })
 
     this.schema.createTable('approval_requests', (table) => {
-      table.uuid('id').primary()
+      table.uuid('id').primary().index()
       table.uuid('approver_id').references('id').inTable('employees').onDelete('CASCADE')
       table.uuid('leave_request_id').references('id').inTable('leave_requests').onDelete('CASCADE')
       table.enum('status', Object.keys(Status)).notNullable()
@@ -47,7 +47,7 @@ export default class extends BaseSchema {
     })
 
     this.schema.createTable('projects', (table) => {
-      table.uuid('id').primary()
+      table.uuid('id').primary().index()
       table.string('name', 180).notNullable()
       table.enum('type', Object.keys(ProjectType)).notNullable()
       table.date('start').notNullable()

@@ -1,13 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import ProjectType from '#types/project_type'
 import Employee from '#models/employee'
 import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
-import type { UUID } from 'node:crypto'
+import * as nodeCrypto from 'node:crypto'
 
 export default class Project extends BaseModel {
   @column({ isPrimary: true })
-  declare id: UUID
+  declare id: nodeCrypto.UUID
 
   @column()
   declare name: string
@@ -44,4 +44,9 @@ export default class Project extends BaseModel {
     pivotRelatedForeignKey: 'employee_id',
   })
   declare employees: ManyToMany<typeof Employee>
+
+  @beforeCreate()
+  static async createUUID(model: Project) {
+    model.id = nodeCrypto.randomUUID()
+  }
 }

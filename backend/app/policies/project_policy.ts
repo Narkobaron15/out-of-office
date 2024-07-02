@@ -21,7 +21,7 @@ export default class ProjectPolicy extends BasePolicy {
     return (
       (user.role === Position.PROJECT_MANAGER && args.manager.id === user.id) ||
       (user.role === Position.HR_MANAGER &&
-        args.employees.find((x) => x.partner.id === user.id) !== undefined) ||
+        args.employees.find((x) => x.partner?.id === user.id) !== undefined) ||
       (user.role === Position.EMPLOYEE &&
         args.employees.find((x) => x.id === user.id) !== undefined)
     )

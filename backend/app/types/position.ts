@@ -1,8 +1,8 @@
 enum Position {
-  EMPLOYEE = 'employee',
-  HR_MANAGER = 'hr_manager',
-  PROJECT_MANAGER = 'project_manager',
-  // TEAM_LEAD = 'team_lead',
+  EMPLOYEE = 'EMPLOYEE',
+  HR_MANAGER = 'HR_MANAGER',
+  PROJECT_MANAGER = 'PROJECT_MANAGER',
+  // TEAM_LEAD = 'TEAM_LEAD',
 }
 
 export default Position

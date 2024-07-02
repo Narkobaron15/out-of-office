@@ -1,14 +1,14 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, column, hasOne } from '@adonisjs/lucid/orm'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import Employee from '#models/employee'
 import AbsenceReason from '#types/absence_reason'
 import Status from '#types/status'
-import type { UUID } from 'node:crypto'
+import * as nodeCrypto from 'node:crypto'
 
 export default class LeaveRequest extends BaseModel {
   @column({ isPrimary: true })
-  declare id: UUID
+  declare id: nodeCrypto.UUID
 
   @hasOne(() => Employee)
   declare employee: HasOne<typeof Employee>
@@ -33,4 +33,9 @@ export default class LeaveRequest extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @beforeCreate()
+  static async createUUID(model: LeaveRequest) {
+    model.id = nodeCrypto.randomUUID()
+  }
 }

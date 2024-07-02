@@ -1,11 +1,11 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Position from '#types/position'
-import type { UUID } from 'node:crypto'
+import nodeCrypto from 'node:crypto'
 import Subdivision from '#types/subdivision'
 import Project from '#models/project'
 
@@ -19,10 +19,10 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
  */
 export default class Employee extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
-  declare id: UUID
+  declare id: nodeCrypto.UUID
 
   @column()
-  declare fullName: string | null
+  declare fullName: string
 
   @column()
   declare email: string
@@ -40,7 +40,7 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
   declare status: boolean
 
   @hasOne(() => Employee)
-  declare partner: HasOne<typeof Employee>
+  declare partner: HasOne<typeof Employee> | null
 
   @column()
   declare daysOff: number
@@ -62,4 +62,9 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'project_id',
   })
   declare projects: ManyToMany<typeof Project>
+
+  @beforeCreate()
+  static async createUUID(model: Employee) {
+    model.id = nodeCrypto.randomUUID()
+  }
 }
