@@ -23,7 +23,10 @@ export default class LeaveRequest extends BaseModel {
   declare end: DateTime
 
   @column()
-  declare comment: string
+  declare shortName: string
+
+  @column()
+  declare comment: string | null
 
   @column()
   declare status: Status

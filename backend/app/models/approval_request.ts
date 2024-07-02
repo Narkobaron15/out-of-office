@@ -19,6 +19,12 @@ export default class ApprovalRequest extends BaseModel {
   @column()
   declare status: Status
 
+  @column()
+  declare shortName: string
+
+  @column()
+  declare comment: string | null
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
