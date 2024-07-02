@@ -19,10 +19,10 @@ export default class SessionController {
     return response.json(user)
   }
 
-  async register({ auth, request, response }: HttpContext) {
-    const newbie = request.all()
-    const user = await Employee.create(newbie)
-    await auth.use('web').login(user, true)
-    return response.noContent()
-  }
+  // async register({ auth, request, response }: HttpContext) {
+  //   const newbie = request.all()
+  //   const user = await Employee.create(newbie)
+  //   await auth.use('web').login(user, true)
+  //   return response.noContent()
+  // }
 }
