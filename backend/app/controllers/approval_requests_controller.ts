@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import ApprovalRequest from '#models/approval_request'
 import Status from '#types/status'
+import Pagination from '#types/pagination'
 
 export default class ApprovalRequestsController {
   /**
@@ -10,10 +11,11 @@ export default class ApprovalRequestsController {
     await bouncer.with('ApprovalRequestPolicy').authorize('open')
 
     const user = await auth.authenticate()
-    const { page, limit } = request.qs() as { page: number; limit: number }
+    const pg = request.qs() as Pagination
     const requests = await ApprovalRequest.query()
       .where('approver_id', user.id)
-      .paginate(page ?? 1, limit ?? 10)
+      .orderBy(pg.column, pg.direction)
+      .paginate(pg.page ?? 1, pg.limit ?? 10)
 
     return requests.toJSON()
   }

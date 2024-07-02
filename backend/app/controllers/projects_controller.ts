@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Project from '#models/project'
 import Employee from '#models/employee'
 import Position from '#types/position'
+import Pagination from '#types/pagination'
 
 export default class ProjectsController {
   /**
@@ -9,13 +10,14 @@ export default class ProjectsController {
    */
   async index({ auth, bouncer, request, response }: HttpContext) {
     const user = auth.getUserOrFail()
-    const { page, limit } = request.qs() as { page: number; limit: number }
+    const pg = request.qs() as Pagination
 
     // find all projects that are managed by the project manager
     if (await bouncer.with('ProjectPolicy').allows('viewAll')) {
       const projects = await Project.query()
         .where('manager_id', user.id)
-        .paginate(page ?? 1, limit ?? 10)
+        .orderBy(pg.column, pg.direction)
+        .paginate(pg.page ?? 1, pg.limit ?? 10)
       return projects.toJSON()
     }
 
@@ -26,7 +28,8 @@ export default class ProjectsController {
         .whereHas('employees', (builder) => {
           builder.where('partner_id', user.id)
         })
-        .paginate(page ?? 1, limit ?? 10)
+        .orderBy(pg.column, pg.direction)
+        .paginate(pg.page ?? 1, pg.limit ?? 10)
       return projects.toJSON()
     }
 
@@ -36,7 +39,8 @@ export default class ProjectsController {
         .whereHas('employees', (builder) => {
           builder.where('employee_id', user.id)
         })
-        .paginate(page ?? 1, limit ?? 10)
+        .orderBy(pg.column, pg.direction)
+        .paginate(pg.page ?? 1, pg.limit ?? 10)
       return projects.toJSON()
     }
 

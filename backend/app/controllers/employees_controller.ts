@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Employee from '#models/employee'
+import Pagination from '#types/pagination'
 
 export default class EmployeesController {
   /**
@@ -10,10 +11,11 @@ export default class EmployeesController {
     const user = await auth.authenticate()
 
     // paginated results
-    const { page, limit } = request.qs() as { page: number; limit: number }
+    const pg = request.qs() as Pagination
     const employees = await Employee.query()
       .where('partner_id', user.id)
-      .paginate(page ?? 1, limit ?? 10)
+      .orderBy(pg.column, pg.direction)
+      .paginate(pg.page ?? 1, pg.limit ?? 10)
 
     return employees.toJSON()
   }

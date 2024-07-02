@@ -1,14 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import LeaveRequest from '#models/leave_request'
 import Status from '#types/status'
+import Pagination from '#types/pagination'
 
 export default class LeaveRequestsController {
   /**
    * Display a list of resource
    */
   async index({ request }: HttpContext) {
-    const { page, limit } = request.qs() as { page: number; limit: number }
-    const requests = await LeaveRequest.query().paginate(page ?? 1, limit ?? 10)
+    const pg = request.qs() as Pagination
+    const requests = await LeaveRequest.query()
+      .orderBy(pg.column, pg.direction)
+      .paginate(pg.page ?? 1, pg.limit ?? 10)
     return requests.toJSON()
   }
 
