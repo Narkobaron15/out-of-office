@@ -1,17 +1,17 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
-import User from '#models/user'
+import Employee from '#models/employee'
 import AbsenceReason from '#types/absence_reason'
 import Status from '#types/status'
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 
 export default class LeaveRequest extends BaseModel {
   @column({ isPrimary: true })
   declare id: UUID
 
-  @hasOne(() => User)
-  declare employee: HasOne<typeof User>
+  @hasOne(() => Employee)
+  declare employee: HasOne<typeof Employee>
 
   @column()
   declare absenceReason: AbsenceReason

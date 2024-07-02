@@ -31,7 +31,7 @@ export default class extends BaseSchema {
       table.date('end').notNullable()
       table.text('comment').notNullable()
       table.enum('status', Object.keys(Status)).notNullable()
-      
+
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })
@@ -41,7 +41,7 @@ export default class extends BaseSchema {
       table.uuid('approver_id').references('id').inTable('employees').onDelete('CASCADE')
       table.uuid('leave_request_id').references('id').inTable('leave_requests').onDelete('CASCADE')
       table.enum('status', Object.keys(Status)).notNullable()
-      
+
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })
@@ -55,7 +55,7 @@ export default class extends BaseSchema {
       table.uuid('manager_id').references('id').inTable('employees').onDelete('CASCADE')
       table.text('comment').nullable()
       table.boolean('status').notNullable()
-      
+
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

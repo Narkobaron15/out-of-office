@@ -5,7 +5,7 @@ import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
 import Position from '#types/position'
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 import Subdivision from '#types/subdivision'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
@@ -32,7 +32,7 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
   @column()
   declare subdivision: Subdivision
 
-  @column({serializeAs: "position"})
+  @column({ serializeAs: 'position' })
   declare role: Position
 
   @column()

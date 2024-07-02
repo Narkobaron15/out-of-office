@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
 import ProjectType from '#types/project_type'
-import User from '#models/user'
+import Employee from '#models/employee'
 import type { HasOne } from '@adonisjs/lucid/types/relations'
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 
 export default class Project extends BaseModel {
   @column({ isPrimary: true })
@@ -21,8 +21,8 @@ export default class Project extends BaseModel {
   @column.date()
   declare end: DateTime
 
-  @hasOne(() => User)
-  declare manager: HasOne<typeof User>
+  @hasOne(() => Employee)
+  declare manager: HasOne<typeof Employee>
 
   @column()
   declare comment?: string

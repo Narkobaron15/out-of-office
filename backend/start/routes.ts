@@ -9,15 +9,17 @@
 
 import router from '@adonisjs/core/services/router'
 
-router.group(() => {
+router
+  .group(() => {
     router.get('/', async () => {
-        return { hello: 'world' }
+      return { hello: 'world' }
     })
-}).prefix('api/v1');
+  })
+  .prefix('api/v1')
 
 // 404
-router.any('*', async ({response}) => {
-    return response.notFound({
-        error: '404 Not Found'
-    })
+router.any('*', async ({ response }) => {
+  return response.notFound({
+    error: '404 Not Found',
+  })
 })
