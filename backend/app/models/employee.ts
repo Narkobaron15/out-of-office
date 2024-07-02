@@ -1,16 +1,17 @@
 import { DateTime } from 'luxon'
 import hash from '@adonisjs/core/services/hash'
 import { compose } from '@adonisjs/core/helpers'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import Position from '#types/position'
 import type { UUID } from 'node:crypto'
 import Subdivision from '#types/subdivision'
+import Project from "#models/project";
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
-  passwordColumnName: 'password',
+  passwordColumnName: 'password'
 })
 
 /**
@@ -52,4 +53,13 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+
+  @manyToMany(() => Project, {
+    pivotTable: 'project_employees',
+    localKey: 'id',
+    relatedKey: 'id',
+    pivotForeignKey: 'employee_id',
+    pivotRelatedForeignKey: 'project_id'
+  })
+  declare projects: ManyToMany<typeof Project>
 }

@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, hasOne } from '@adonisjs/lucid/orm'
+import { BaseModel, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
 import ProjectType from '#types/project_type'
 import Employee from '#models/employee'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
 import type { UUID } from 'node:crypto'
 
 export default class Project extends BaseModel {
@@ -35,4 +35,13 @@ export default class Project extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @manyToMany(() => Employee, {
+    pivotTable: 'project_employees',
+    localKey: 'id',
+    relatedKey: 'id',
+    pivotForeignKey: 'project_id',
+    pivotRelatedForeignKey: 'employee_id',
+  })
+  declare employees: ManyToMany<typeof Employee>
 }

@@ -36,6 +36,6 @@ router
 // 404
 router.any('*', async ({ response }) => {
   return response.notFound({
-    error: '404 Not Found'
+    error: '404 Not Found',
   })
 })
