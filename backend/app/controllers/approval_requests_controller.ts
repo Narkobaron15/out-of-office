@@ -6,9 +6,16 @@ export default class ApprovalRequestsController {
   /**
    * Display a list of resource
    */
-  async index({ bouncer }: HttpContext) {
+  async index({ auth, bouncer, request }: HttpContext) {
     await bouncer.with('ApprovalRequestPolicy').authorize('open')
-    return await ApprovalRequest.all()
+
+    const user = await auth.authenticate()
+    const { page, limit } = request.qs() as { page: number; limit: number }
+    const requests = await ApprovalRequest.query()
+      .where('approver_id', user.id)
+      .paginate(page ?? 1, limit ?? 10)
+
+    return requests.toJSON()
   }
 
   /**

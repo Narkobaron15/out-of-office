@@ -6,12 +6,14 @@ export default class LeaveRequestsController {
   /**
    * Display a list of resource
    */
-  async index() {
-    return await LeaveRequest.all()
+  async index({ request }: HttpContext) {
+    const { page, limit } = request.qs() as { page: number; limit: number }
+    const requests = await LeaveRequest.query().paginate(page ?? 1, limit ?? 10)
+    return requests.toJSON()
   }
 
   /**
-   * Handle form submission for the create action
+   * Handle form submission for the creation action
    */
   async store({ bouncer, request }: HttpContext) {
     await bouncer.with('LeaveRequestPolicy').authorize('open')

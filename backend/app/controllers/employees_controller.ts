@@ -5,10 +5,17 @@ export default class EmployeesController {
   /**
    * Display a list of resource
    */
-  async index({ bouncer, auth }: HttpContext) {
+  async index({ auth, bouncer, request }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('view')
     const user = await auth.authenticate()
-    return await Employee.findManyBy('partner_id', user.id)
+
+    // paginated results
+    const { page, limit } = request.qs() as { page: number; limit: number }
+    const employees = await Employee.query()
+      .where('partner_id', user.id)
+      .paginate(page ?? 1, limit ?? 10)
+
+    return employees.toJSON()
   }
 
   /**
