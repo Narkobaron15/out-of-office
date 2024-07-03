@@ -26,10 +26,7 @@ export default class EmployeesController {
    */
   async show({ bouncer, params }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('view')
-    return await Employee.query()
-      .where('id', params.id)
-      .preload('projects')
-      .firstOrFail()
+    return await Employee.query().where('id', params.id).preload('projects').firstOrFail()
   }
 
   /**

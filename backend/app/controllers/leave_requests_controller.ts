@@ -33,10 +33,7 @@ export default class LeaveRequestsController {
    * Show individual record
    */
   async show({ params }: HttpContext) {
-    return await LeaveRequest.query()
-      .where('id', params.id)
-      .preload('employee')
-      .firstOrFail()
+    return await LeaveRequest.query().where('id', params.id).preload('employee').firstOrFail()
   }
 
   /**
