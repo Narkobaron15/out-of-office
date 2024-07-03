@@ -58,6 +58,7 @@
     "@adonisjs/cors": "^2.2.1",
     "@adonisjs/lucid": "^21.1.0",
     "@adonisjs/session": "^7.4.2",
+    "@google-cloud/storage": "^7.11.2",
     "@vinejs/vine": "^2.1.0",
     "luxon": "^3.4.4",
     "pg": "^8.12.0",

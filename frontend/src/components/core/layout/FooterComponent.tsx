@@ -1,8 +1,11 @@
 import {Footer} from 'flowbite-react'
+import {Link} from "react-router-dom";
 import './layout.css'
 
 export default function FooterComponent() {
     const currentYear = new Date().getFullYear()
+
+    // @ts-ignore
     return (
         <Footer container>
             <div className='w-full text-center'>
@@ -14,14 +17,22 @@ export default function FooterComponent() {
                         name='Out of office'
                     />
                     <Footer.LinkGroup>
-                        <Footer.Link href='#'>About</Footer.Link>
-                        <Footer.Link href='#'>Privacy Policy</Footer.Link>
-                        <Footer.Link href='#'>Licensing</Footer.Link>
-                        <Footer.Link href='#'>Contact</Footer.Link>
+                        <Footer.Link as={Link} href='' to='/about'>
+                            About
+                        </Footer.Link>
+                        <Footer.Link as={Link} href='' to='/privacy-policy'>
+                            Privacy Policy
+                        </Footer.Link>
+                        <Footer.Link as={Link} href='' to='/licensing'>
+                            Licensing
+                        </Footer.Link>
+                        <Footer.Link as={Link} href='' to='/contact'>
+                            Contact us
+                        </Footer.Link>
                     </Footer.LinkGroup>
                 </div>
-                <Footer.Divider />
-                <Footer.Copyright href='/' by='Out of office™' year={currentYear} />
+                <Footer.Divider/>
+                <Footer.Copyright href='/' by='Out of office™' year={currentYear}/>
             </div>
         </Footer>
     )

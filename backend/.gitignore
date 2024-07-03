@@ -9,6 +9,7 @@ tmp
 .env.production.local
 .env.development.local
 seeders
+keyfile.json
 
 # Frontend assets compiled code
 public/assets

@@ -1,8 +1,68 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Employee from '#models/employee'
 import Pagination from '#types/pagination'
+import bucket from '../files/bucket.js'
+import { cuid } from '@adonisjs/core/helpers'
+import * as fs from 'node:fs'
+import { Request } from '@adonisjs/http-server'
 
 export default class EmployeesController {
+  private static readonly DEFAULT_AVATAR_URL =
+    'https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png'
+
+  private static async uploadAvatar(request: Request, employee: Employee) {
+    if (!request.file('avatar')) {
+      // set a default picture
+      employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+      return
+    }
+
+    const avatar = request.file('avatar', {
+      size: '5mb',
+      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif'],
+    })
+
+    if (!avatar) {
+      if (!employee.pictureUrl) {
+        employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+      }
+      return { error: 'No file was uploaded' }
+    }
+    if (!avatar.isValid) {
+      if (!employee.pictureUrl) {
+        employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+      }
+      return avatar.errors
+    }
+
+    const fileName = `${cuid()}.${avatar.extname}`
+    await avatar.move('/tmp', { name: fileName })
+
+    const [file] = await bucket.upload(`/tmp/${fileName}`, {
+      destination: `avatars/${fileName}`,
+      metadata: {
+        contentType: avatar.headers['content-type'],
+      },
+    })
+
+    await file.makePublic()
+    employee.pictureUrl = file.publicUrl()
+
+    // remove the temporary file from the filesystem
+    await fs.promises.unlink(`/tmp/${fileName}`)
+  }
+
+  private static async deleteAvatar(request: Request, employee: Employee) {
+    if (
+      (request.all()['delete_avatar'] === 'true' || request.file('avatar')) &&
+      employee.pictureUrl
+    ) {
+      const filename = 'avatars/' + employee.pictureUrl.split('/').pop()!
+      await bucket.file(filename).delete()
+    }
+    employee.pictureUrl = undefined
+  }
+
   /**
    * Display a list of resource
    */
@@ -38,6 +98,7 @@ export default class EmployeesController {
     const user = await auth.authenticate()
     const employee = new Employee()
     employee.fill({ ...request.all(), partner_id: user.id })
+    await EmployeesController.uploadAvatar(request, employee)
     await employee.save()
 
     return employee
@@ -55,6 +116,8 @@ export default class EmployeesController {
 
     const employee = await Employee.findOrFail(params.id)
     employee.merge(request.all())
+    await EmployeesController.deleteAvatar(request, employee)
+    await EmployeesController.uploadAvatar(request, employee)
     await employee.save()
 
     return employee
@@ -63,11 +126,16 @@ export default class EmployeesController {
   /**
    * Delete record
    */
-  async destroy({ bouncer, response, params }: HttpContext) {
+  async destroy({ bouncer, request, response, params }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('delete')
 
     const employee = await Employee.find(params.id)
-    await employee?.delete()
+    if (!employee) {
+      return response.notFound('Employee not found')
+    }
+
+    await EmployeesController.deleteAvatar(request, employee)
+    await employee.delete()
 
     return response.noContent()
   }
