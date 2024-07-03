@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+import NotFoundController from "#controllers/not_found_controller";
 
 // API Routes
 router
@@ -46,8 +47,4 @@ router
   .prefix('api/v1')
 
 // 404
-router.any('*', async ({ response }) => {
-  return response.notFound({
-    error: '404 Not Found',
-  })
-})
+router.any('*', [NotFoundController])
