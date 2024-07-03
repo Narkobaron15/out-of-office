@@ -1,0 +1,11 @@
+nav img {
+    @apply mr-3 h-6 sm:h-9;
+}
+
+nav h1 {
+    @apply self-center whitespace-nowrap text-xl font-semibold dark:text-white;
+}
+
+footer .link-group {
+    @apply w-full justify-between sm:flex sm:items-center sm:justify-between;
+}
