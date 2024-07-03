@@ -3,9 +3,16 @@ import Employee from '#models/employee'
 
 export default class SessionController {
   async login({ auth, request, response }: HttpContext) {
-    const { username, password } = request.all()
-    const user = await Employee.verifyCredentials(username, password)
-    await auth.use('web').login(user, true)
+    const { email, password } = request.all()
+    const user = await Employee.verifyCredentials(email, password)
+    await auth.use('web').login(
+      user,
+      /**
+       * Generate token when "remember_me" input exists
+       */
+      !!request.input('remember_me')
+    )
+
     return response.noContent()
   }
 

@@ -8,6 +8,7 @@ import Position from '#types/position'
 import nodeCrypto from 'node:crypto'
 import Subdivision from '#types/subdivision'
 import Project from '#models/project'
+import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -62,6 +63,8 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
     pivotRelatedForeignKey: 'project_id',
   })
   declare projects: ManyToMany<typeof Project>
+
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(Employee)
 
   @beforeCreate()
   static async createUUID(model: Employee) {
