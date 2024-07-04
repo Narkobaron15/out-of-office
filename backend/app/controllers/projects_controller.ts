@@ -10,7 +10,8 @@ export default class ProjectsController {
    */
   async index({ auth, bouncer, request, response }: HttpContext) {
     const user = auth.getUserOrFail()
-    const pg = request.qs() as Pagination
+    const { page, limit, order } = request.qs()
+    const pg = new Pagination({ page, limit, order })
 
     // find all projects that are managed by the project manager
     if (await bouncer.with('ProjectPolicy').allows('viewAll')) {
@@ -19,7 +20,7 @@ export default class ProjectsController {
         .orderBy(pg.column, pg.direction)
         .preload('employees')
         .preload('manager')
-        .paginate(pg.page ?? 1, pg.limit ?? 10)
+        .paginate(pg.page, pg.limit)
       return projects.toJSON()
     }
 
@@ -31,7 +32,7 @@ export default class ProjectsController {
           builder.where('partner_id', user.id)
         })
         .orderBy(pg.column, pg.direction)
-        .paginate(pg.page ?? 1, pg.limit ?? 10)
+        .paginate(pg.page, pg.limit)
       return projects.toJSON()
     }
 
@@ -42,7 +43,7 @@ export default class ProjectsController {
           builder.where('employee_id', user.id)
         })
         .orderBy(pg.column, pg.direction)
-        .paginate(pg.page ?? 1, pg.limit ?? 10)
+        .paginate(pg.page, pg.limit)
       return projects.toJSON()
     }
 
@@ -66,14 +67,23 @@ export default class ProjectsController {
   /**
    * Show individual record
    */
-  async show({ bouncer, params }: HttpContext) {
-    const project = await Project.query()
-      .where('id', params.id)
-      .preload('employees')
-      .preload('manager')
-      .firstOrFail()
-    await bouncer.with('ProjectPolicy').authorize('view', project)
-    return project
+  async show({ bouncer, params, response }: HttpContext) {
+    try {
+      const project = await Project.query()
+        .where('id', params.id)
+        .preload('employees')
+        .preload('manager')
+        .firstOrFail()
+
+      const isAllowed = await bouncer.with('ProjectPolicy').allows('view', project)
+      if (!isAllowed) {
+        return response.forbidden()
+      }
+
+      return project
+    } catch (error) {
+      return response.notFound()
+    }
   }
 
   /**

@@ -11,13 +11,14 @@ export default class ApprovalRequestsController {
     await bouncer.with('ApprovalRequestPolicy').authorize('open')
 
     const user = await auth.authenticate()
-    const pg = request.qs() as Pagination
+    const { page, limit, order } = request.qs()
+    const pg = new Pagination({ page, limit, order })
     const requests = await ApprovalRequest.query()
       .where('approver_id', user.id)
       .orderBy(pg.column, pg.direction)
       .preload('leaveRequest')
       .preload('approver')
-      .paginate(pg.page ?? 1, pg.limit ?? 10)
+      .paginate(pg.page, pg.limit)
 
     return requests.toJSON()
   }
@@ -38,13 +39,17 @@ export default class ApprovalRequestsController {
   /**
    * Show individual record
    */
-  async show({ bouncer, params }: HttpContext) {
+  async show({ bouncer, params, response }: HttpContext) {
     await bouncer.with('ApprovalRequestPolicy').authorize('open')
-    return await ApprovalRequest.query()
-      .where('id', params.id)
-      .preload('leaveRequest')
-      .preload('approver')
-      .firstOrFail()
+    try {
+      return await ApprovalRequest.query()
+        .where('id', params.id)
+        .preload('leaveRequest')
+        .preload('approver')
+        .firstOrFail()
+    } catch (error) {
+      return response.notFound()
+    }
   }
 
   /**

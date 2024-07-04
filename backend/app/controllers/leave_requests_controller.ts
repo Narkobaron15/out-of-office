@@ -8,11 +8,12 @@ export default class LeaveRequestsController {
    * Display a list of resource
    */
   async index({ request }: HttpContext) {
-    const pg = request.qs() as Pagination
+    const { page, limit, order } = request.qs()
+    const pg = new Pagination({ page, limit, order })
     const requests = await LeaveRequest.query()
       .orderBy(pg.column, pg.direction)
       .preload('employee')
-      .paginate(pg.page ?? 1, pg.limit ?? 10)
+      .paginate(pg.page, pg.limit)
     return requests.toJSON()
   }
 
@@ -32,8 +33,15 @@ export default class LeaveRequestsController {
   /**
    * Show individual record
    */
-  async show({ params }: HttpContext) {
-    return await LeaveRequest.query().where('id', params.id).preload('employee').firstOrFail()
+  async show({ params, response }: HttpContext) {
+    try {
+      return await LeaveRequest.query()
+        .where('id', params.id)
+        .preload('employee')
+        .firstOrFail()
+    } catch (error) {
+      return response.notFound()
+    }
   }
 
   /**
