@@ -1,0 +1,19 @@
+.account-container {
+    @apply flex flex-col items-center justify-center m-8;
+}
+
+.card {
+    @apply max-w-4xl w-full p-6;
+}
+
+.account-container h2 {
+    @apply text-2xl font-bold mb-4;
+}
+
+.account-container section {
+    @apply mb-4
+}
+
+.account-container h4 {
+    @apply text-lg font-semibold mb-2;
+}

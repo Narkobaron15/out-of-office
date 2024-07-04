@@ -4,7 +4,7 @@ import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import LoginModel from "../../models/login_model.ts"
 import {LoginValidationSchema} from "../../models/schemas.ts"
 import {Label} from "flowbite-react"
-import './loginpage.css'
+import './login_page.css'
 import {HiOutlineLockClosed} from "react-icons/hi"
 import http_common from "../../common/http_common.ts"
 import {AxiosError} from "axios"

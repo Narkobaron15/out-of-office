@@ -39,7 +39,7 @@ export default function ContactPage() {
                     <p className="mb-1">Name: Bob Smith</p>
                     <div className="flex justify-center">
                         <p className="mb-1">
-                            Email:
+                            Email:&nbsp;
                             <Link to="mailto:bob.smith@example.com" className="email">
                                 bob.smith@example.com
                             </Link>
@@ -61,7 +61,7 @@ export default function ContactPage() {
                     <h3 className="text-xl font-semibold mb-2">General Inquiries</h3>
                     <div className="flex justify-center">
                         <p className="mb-1">
-                            Email:
+                            Email:&nbsp;
                             <Link to="mailto:info@example.com" className="email">
                                 info@example.com
                             </Link>

@@ -6,6 +6,7 @@ import NotFoundPage from './NotFoundPage.tsx'
 import LoginPage from "../auth/LoginPage.tsx"
 import AboutPage from "../info/AboutPage.tsx"
 import ContactPage from "../info/ContactPage.tsx";
+import AccountPage from "../auth/AccountPage.tsx";
 
 export default function App() {
     return (
@@ -15,7 +16,7 @@ export default function App() {
                 <Route path='login' element={<LoginPage/>}/>
                 <Route path='about' element={<AboutPage/>}/>
                 <Route path='contact' element={<ContactPage/>}/>
-                {/*<Route path='account' element={<AccountPage/>}/>*/}
+                <Route path='account' element={<AccountPage/>}/>
                 {/*<Route path='employees' element={<EmployeesPage/>}>
                         <Route path=':id'>
                             <Route index element={<EmployeePage/>}/>
