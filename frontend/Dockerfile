@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy the package.json and package-lock.json or yarn.lock files
 COPY package.json ./
+COPY package-lock.json ./
 COPY bun.lockb ./
 
 # Install dependencies

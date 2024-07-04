@@ -2,6 +2,7 @@ import {Button} from "flowbite-react";
 import './css/homepage.css'
 
 export default function HomePage() {
+    const auth = localStorage.getItem('auth')
     return (
         <div className="homepage-container">
             <h2>Welcome to Out of office!</h2>
@@ -16,22 +17,24 @@ export default function HomePage() {
                 You can also view the progress of the projects and requests in a visual way
                 by clicking the buttons below.
             </p>
-            <div className="dashboard-pills">
-                {/* TODO: Show dashboards by role */}
-                <Button pill gradientDuoTone="purpleToBlue" href="/approval-requests">
-                    Approval requests
-                </Button>
-                <Button pill gradientDuoTone="purpleToBlue" href="/leave-requests">
-                    Leave requests
-                </Button>
-                <Button pill gradientDuoTone="purpleToBlue" href="/projects">
-                    Projects
-                </Button>
-                {/* TODO: Show this button only if there is no one logged in */}
-                <Button pill gradientDuoTone="purpleToBlue" href="/login">
-                    Login
-                </Button>
-            </div>
+            <div className="dashboard-pills">{
+                /* TODO: Show dashboards by role */
+                auth ? <>
+                    <Button pill gradientDuoTone="purpleToBlue" href="/approval-requests">
+                        Approval requests
+                    </Button>
+                    <Button pill gradientDuoTone="purpleToBlue" href="/leave-requests">
+                        Leave requests
+                    </Button>
+                    <Button pill gradientDuoTone="purpleToBlue" href="/projects">
+                        Projects
+                    </Button>
+                </> : <>
+                    <Button pill gradientDuoTone="purpleToBlue" href="/login">
+                        Login
+                    </Button>
+                </>
+            }</div>
         </div>
     )
 }

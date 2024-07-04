@@ -7,6 +7,8 @@ import * as fs from 'node:fs'
 import { Request } from '@adonisjs/http-server'
 import sharp from 'sharp'
 
+sharp.cache(false)
+
 export default class EmployeesController {
   private static readonly DEFAULT_AVATAR_URL =
     'https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png'
@@ -44,7 +46,6 @@ export default class EmployeesController {
 
     const fileName = `${cuid()}.${avatar.extname}`
     await avatar.move('./tmp', { name: fileName })
-    sharp.cache(false)
     await sharp(`./tmp/${fileName}`)
       .resize(128, 128)
       .jpeg({ quality: 90 })

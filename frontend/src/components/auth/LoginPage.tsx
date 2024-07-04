@@ -4,7 +4,7 @@ import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
 import LoginModel from "../../models/login_model.ts";
 import {LoginValidationSchema} from "../../models/schemas.ts";
 import {Label} from "flowbite-react";
-import './css/loginpage.css'
+import './loginpage.css'
 import {HiOutlineLockClosed} from "react-icons/hi";
 import http_common from "../../common/http_common.ts";
 import {AxiosError} from "axios";
@@ -50,8 +50,7 @@ export default function LoginPage() {
         <Formik
             initialValues={initialValues}
             validationSchema={LoginValidationSchema}
-            onSubmit={onSubmit}
-        >
+            onSubmit={onSubmit}>
             {({isSubmitting}) => (
                 <Form className="login-form">
                     <div className="login-container">
