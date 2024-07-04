@@ -22,7 +22,7 @@ export default class EmployeesController {
 
     const avatar = request.file('avatar', {
       size: '5mb',
-      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif'],
+      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif']
     })
 
     if (!avatar) {
@@ -54,8 +54,8 @@ export default class EmployeesController {
     const [file] = await bucket.upload(`./tmp/compressed/${fileName}`, {
       destination: `avatars/${fileName}`,
       metadata: {
-        contentType: avatar.headers['content-type'],
-      },
+        contentType: avatar.headers['content-type']
+      }
     })
     // await file.makePublic()
     employee.pictureUrl = file.publicUrl()
@@ -65,14 +65,18 @@ export default class EmployeesController {
     await fs.promises.unlink(`./tmp/${fileName}`)
   }
 
-  private static async deleteAvatar(request: Request, employee: Employee) {
-    if (
-      (request.all()['delete_avatar'] === 'true' || request.file('avatar')) &&
-      employee.pictureUrl
-    ) {
-      const filename = 'avatars/' + employee.pictureUrl.split('/').pop()!
-      await bucket.file(filename).delete()
-    }
+  private static async deleteAvatar(request: Request, employee: Employee, deleteAvatar = false) {
+    if (!employee.pictureUrl) return
+    if (employee.pictureUrl === EmployeesController.DEFAULT_AVATAR_URL) return
+
+    const shouldDelete =
+      deleteAvatar ||
+      request.all()['delete_avatar'] === 'true' ||
+      request.file('avatar')
+    if (!shouldDelete) return
+
+    const filename = 'avatars/' + employee.pictureUrl.split('/').pop()!
+    await bucket.file(filename).delete()
     employee.pictureUrl = undefined
   }
 
@@ -147,9 +151,14 @@ export default class EmployeesController {
   async destroy({ bouncer, request, response, params }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('delete')
 
-    const employee = await Employee.find(params.id)
+    let employee: Employee | null
+    try {
+      employee = await Employee.find(params.id)
+    } catch (error) {
+      return response.notFound()
+    }
     if (!employee) {
-      return response.notFound('Employee not found')
+      return response.notFound()
     }
 
     await EmployeesController.deleteAvatar(request, employee)

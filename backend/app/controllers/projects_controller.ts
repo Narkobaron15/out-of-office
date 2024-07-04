@@ -94,7 +94,12 @@ export default class ProjectsController {
       return response.badRequest('Cannot change the project ID')
     }
 
-    const project = await Project.findOrFail(params.id)
+    let project: Project | null
+    try {
+      project = await Project.findOrFail(params.id)
+    } catch (error) {
+      return response.notFound()
+    }
     await bouncer.with('ProjectPolicy').authorize('update', project)
 
     project.merge(request.all())
@@ -106,8 +111,13 @@ export default class ProjectsController {
   /**
    * Delete record
    */
-  async destroy({ bouncer, params }: HttpContext) {
-    const project = await Project.findOrFail(params.id)
+  async destroy({ bouncer, params, response }: HttpContext) {
+    let project: Project | null
+    try {
+      project = await Project.findOrFail(params.id)
+    } catch (error) {
+      return response.notFound()
+    }
     await bouncer.with('ProjectPolicy').authorize('delete', project)
     await project.delete()
   }
@@ -119,7 +129,12 @@ export default class ProjectsController {
     const project = await Project.findOrFail(request.all().project_id)
     await bouncer.with('ProjectPolicy').authorize('assign', project)
 
-    const employee = await Employee.findOrFail(request.all().employee_id)
+    let employee: Employee | null
+    try {
+      employee = await Employee.findOrFail(request.all().employee_id)
+    } catch (error) {
+      return response.notFound('Employee not found')
+    }
     if (employee.role !== Position.EMPLOYEE) {
       return response.badRequest('Only employees can be assigned to projects')
     }

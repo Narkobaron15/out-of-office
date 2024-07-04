@@ -54,11 +54,15 @@ export default class LeaveRequestsController {
 
     await bouncer.with('LeaveRequestPolicy').authorize('update')
 
-    const leaveRequest = await LeaveRequest.findOrFail(params.id)
-    leaveRequest.merge(request.all())
-    await leaveRequest.save()
+    try {
+      const leaveRequest = await LeaveRequest.findOrFail(params.id)
+      leaveRequest.merge(request.all())
+      await leaveRequest.save()
 
-    return leaveRequest
+      return leaveRequest
+    } catch (error) {
+      return response.notFound()
+    }
   }
 
   /**
@@ -67,10 +71,14 @@ export default class LeaveRequestsController {
   async destroy({ bouncer, params, response }: HttpContext) {
     await bouncer.with('LeaveRequestPolicy').authorize('cancel')
 
-    const record = await LeaveRequest.findOrFail(params.id)
-    record.merge({ status: Status.CANCELLED })
-    await record.save()
+    try {
+      const record = await LeaveRequest.findOrFail(params.id)
+      record.merge({ status: Status.CANCELLED })
+      await record.save()
 
-    return response.noContent()
+      return response.noContent()
+    } catch (error) {
+      return response.notFound()
+    }
   }
 }
