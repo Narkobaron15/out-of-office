@@ -17,6 +17,9 @@ COPY . .
 # Build the application
 RUN bun vite build
 
+ENV VITE_API_URL=$VITE_API_URL
+ENV NODE_ENV=production
+
 EXPOSE 8080
 
 # Command to start the Vite preview

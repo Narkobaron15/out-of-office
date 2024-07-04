@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Employee from '#models/employee'
 
 export default class SessionController {
-  async login({ auth, request, response }: HttpContext) {
+  async login({ auth, request }: HttpContext) {
     const { email, password } = request.all()
     const user = await Employee.verifyCredentials(email, password)
     await auth.use('web').login(
@@ -13,7 +13,7 @@ export default class SessionController {
       !!request.input('remember_me')
     )
 
-    return response.noContent()
+    return user.role
   }
 
   async logout({ auth, response }: HttpContext) {

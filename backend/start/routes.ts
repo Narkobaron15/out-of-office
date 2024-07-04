@@ -9,7 +9,6 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
-
 const SessionController = () => import('#controllers/session_controller')
 const NotFoundController = () => import('#controllers/not_found_controller')
 const ApprovalRequestsController = () => import('#controllers/approval_requests_controller')
