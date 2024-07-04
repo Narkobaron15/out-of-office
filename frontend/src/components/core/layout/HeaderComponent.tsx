@@ -20,9 +20,6 @@ export default function HeaderComponent() {
                 <Navbar.Link as={Link} to='/about' active={path === '/about'}>
                     About
                 </Navbar.Link>
-                <Navbar.Link as={Link} to='/lists' active={path === '/lists'}>
-                    Lists
-                </Navbar.Link>
                 {/* TODO: swap out to the account link if a user is logged in */}
                 <Navbar.Link as={Link} to='/login' active={path === '/login'}>
                     Login

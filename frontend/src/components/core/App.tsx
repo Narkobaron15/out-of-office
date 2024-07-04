@@ -3,16 +3,15 @@ import {Route, Routes} from 'react-router-dom'
 import Layout from './layout/Layout.tsx'
 import HomePage from './HomePage.tsx'
 import NotFoundPage from './NotFoundPage.tsx'
+import LoginPage from "../auth/LoginPage.tsx";
 
 export default function App() {
     return (
         <Routes>
             <Route path='/' element={<Layout/>}>
                 <Route index element={<HomePage/>}/>
-                {/*<Route path='login' element={<LoginPage/>}/>
-                <Route path='lists'>
-                    <Route index element={<ListsPage/>}/>
-                    <Route path='employees' element={<EmployeesPage/>}>
+                <Route path='login' element={<LoginPage/>}/>
+                {/*<Route path='employees' element={<EmployeesPage/>}>
                         <Route path=':id'>
                             <Route index element={<EmployeePage/>}/>
                             <Route path='create' element={<EmployeeCreatePage/>}/>
@@ -39,7 +38,6 @@ export default function App() {
                             <Route path='create' element={<ProjectCreatePage/>}/>
                             <Route path='edit' element={<ProjectEditPage/>}/>
                         </Route>
-                    </Route>
                 </Route>*/}
             </Route>
             <Route path='*' element={<NotFoundPage/>}/>
