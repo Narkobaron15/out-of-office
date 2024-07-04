@@ -39,4 +39,5 @@ export default await Env.create(new URL('../', import.meta.url), {
   // Bucket name for the session driver
   BUCKET_NAME: Env.schema.string(),
   GCLOUD_PROJECT_ID: Env.schema.string(),
+  GCLOUD_TOKEN: Env.schema.string(),
 })

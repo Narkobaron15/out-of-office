@@ -1,9 +1,21 @@
 export default class Pagination {
-  declare page: number
+  page: number
+  limit: number
+  order: `${string},${string}`
 
-  declare limit: number
-
-  declare order: `${string},${string}`
+  constructor({
+    page,
+    limit,
+    order,
+  }: {
+    page: number
+    limit: number
+    order: `${string},${string}`
+  }) {
+    this.page = page ?? 1
+    this.limit = limit ?? 10
+    this.order = order
+  }
 
   get column() {
     if (!this.order || this.order.split(',').length < 2) {

@@ -44,6 +44,9 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
   declare partner: HasOne<typeof Employee> | null
 
   @column()
+  declare partnerId: nodeCrypto.UUID | null
+
+  @column()
   declare daysOff: number
 
   @column()

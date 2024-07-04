@@ -37,29 +37,31 @@ export default class EmployeesController {
     }
 
     // create tmp directory if it doesn't exist
-    if (!fs.existsSync('/tmp')) {
-      await fs.promises.mkdir('/tmp')
-      await fs.promises.mkdir('/tmp/compressed')
+    if (!fs.existsSync('./tmp')) {
+      await fs.promises.mkdir('./tmp')
+      await fs.promises.mkdir('./tmp/compressed')
     }
+
     const fileName = `${cuid()}.${avatar.extname}`
-    await avatar.move('/tmp', { name: fileName })
-    await sharp(`/tmp/${fileName}`)
+    await avatar.move('./tmp', { name: fileName })
+    sharp.cache(false)
+    await sharp(`./tmp/${fileName}`)
       .resize(128, 128)
       .jpeg({ quality: 90 })
-      .toFile(`/tmp/compressed/${fileName}`)
+      .toFile(`./tmp/compressed/${fileName}`)
 
-    const [file] = await bucket.upload(`/tmp/compressed/${fileName}`, {
+    const [file] = await bucket.upload(`./tmp/compressed/${fileName}`, {
       destination: `avatars/${fileName}`,
       metadata: {
         contentType: avatar.headers['content-type'],
       },
     })
-    await file.makePublic()
+    // await file.makePublic()
     employee.pictureUrl = file.publicUrl()
 
     // remove the temporary file from the filesystem
-    await fs.promises.unlink(`/tmp/${fileName}`)
-    await fs.promises.unlink(`/tmp/compressed/${fileName}`)
+    await fs.promises.unlink(`./tmp/compressed/${fileName}`)
+    await fs.promises.unlink(`./tmp/${fileName}`)
   }
 
   private static async deleteAvatar(request: Request, employee: Employee) {
@@ -81,12 +83,13 @@ export default class EmployeesController {
     const user = await auth.authenticate()
 
     // paginated results
-    const pg = request.qs() as Pagination
+    const { page, limit, order } = request.qs()
+    const pg = new Pagination({ page, limit, order })
     const employees = await Employee.query()
       .where('partner_id', user.id)
       .orderBy(pg.column, pg.direction)
       .preload('projects')
-      .paginate(pg.page ?? 1, pg.limit ?? 10)
+      .paginate(pg.page, pg.limit)
 
     return employees.toJSON()
   }
@@ -94,9 +97,13 @@ export default class EmployeesController {
   /**
    * Show individual record
    */
-  async show({ bouncer, params }: HttpContext) {
+  async show({ bouncer, params, response }: HttpContext) {
     await bouncer.with('EmployeePolicy').authorize('view')
-    return await Employee.query().where('id', params.id).preload('projects').firstOrFail()
+    try {
+      return await Employee.query().where('id', params.id).preload('projects').firstOrFail()
+    } catch (error) {
+      return response.notFound()
+    }
   }
 
   /**
@@ -107,7 +114,7 @@ export default class EmployeesController {
 
     const user = await auth.authenticate()
     const employee = new Employee()
-    employee.fill({ ...request.all(), partner_id: user.id })
+    employee.fill({ ...request.all(), partnerId: user.id })
     await EmployeesController.uploadAvatar(request, employee)
     await employee.save()
 

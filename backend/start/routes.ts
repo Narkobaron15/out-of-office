@@ -33,10 +33,10 @@ router
     router
       .group(() => {
         router.get('check', [SessionController, 'check']).prefix('auth')
-        router.resource('employees', EmployeesController)
-        router.resource('projects', ProjectsController)
+        router.resource('employees', EmployeesController).apiOnly()
+        router.resource('projects', ProjectsController).apiOnly()
         router.get('projects/assign', [ProjectsController, 'assign'])
-        router.resource('leave-requests', LeaveRequestsController)
+        router.resource('leave-requests', LeaveRequestsController).apiOnly()
         router // approval requests
           .group(() => {
             router.get('', [ApprovalRequestsController, 'index'])
