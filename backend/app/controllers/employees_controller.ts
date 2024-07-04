@@ -5,6 +5,7 @@ import bucket from '../files/bucket.js'
 import { cuid } from '@adonisjs/core/helpers'
 import * as fs from 'node:fs'
 import { Request } from '@adonisjs/http-server'
+import sharp from 'sharp'
 
 export default class EmployeesController {
   private static readonly DEFAULT_AVATAR_URL =
@@ -35,21 +36,30 @@ export default class EmployeesController {
       return avatar.errors
     }
 
+    // create tmp directory if it doesn't exist
+    if (!fs.existsSync('/tmp')) {
+      await fs.promises.mkdir('/tmp')
+      await fs.promises.mkdir('/tmp/compressed')
+    }
     const fileName = `${cuid()}.${avatar.extname}`
     await avatar.move('/tmp', { name: fileName })
+    await sharp(`/tmp/${fileName}`)
+      .resize(128, 128)
+      .jpeg({ quality: 90 })
+      .toFile(`/tmp/compressed/${fileName}`)
 
-    const [file] = await bucket.upload(`/tmp/${fileName}`, {
+    const [file] = await bucket.upload(`/tmp/compressed/${fileName}`, {
       destination: `avatars/${fileName}`,
       metadata: {
         contentType: avatar.headers['content-type'],
       },
     })
-
     await file.makePublic()
     employee.pictureUrl = file.publicUrl()
 
     // remove the temporary file from the filesystem
     await fs.promises.unlink(`/tmp/${fileName}`)
+    await fs.promises.unlink(`/tmp/compressed/${fileName}`)
   }
 
   private static async deleteAvatar(request: Request, employee: Employee) {

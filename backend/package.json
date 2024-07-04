@@ -62,7 +62,8 @@
     "@vinejs/vine": "^2.1.0",
     "luxon": "^3.4.4",
     "pg": "^8.12.0",
-    "reflect-metadata": "^0.2.2"
+    "reflect-metadata": "^0.2.2",
+    "sharp": "^0.33.4"
   },
   "hotHook": {
     "boundaries": [

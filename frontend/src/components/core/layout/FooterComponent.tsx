@@ -4,7 +4,6 @@ import './layout.css'
 
 export default function FooterComponent() {
     const currentYear = new Date().getFullYear()
-
     // @ts-ignore
     return (
         <Footer container>
