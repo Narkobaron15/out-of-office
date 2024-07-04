@@ -1,5 +1,4 @@
 import {Footer} from 'flowbite-react'
-import {Link} from "react-router-dom";
 import './layout.css'
 
 export default function FooterComponent() {
@@ -16,16 +15,10 @@ export default function FooterComponent() {
                         name='Out of office'
                     />
                     <Footer.LinkGroup>
-                        <Footer.Link as={Link} href='' to='/about'>
+                        <Footer.Link href='/about'>
                             About
                         </Footer.Link>
-                        <Footer.Link as={Link} href='' to='/privacy-policy'>
-                            Privacy Policy
-                        </Footer.Link>
-                        <Footer.Link as={Link} href='' to='/licensing'>
-                            Licensing
-                        </Footer.Link>
-                        <Footer.Link as={Link} href='' to='/contact'>
+                        <Footer.Link href='/contact'>
                             Contact us
                         </Footer.Link>
                     </Footer.LinkGroup>

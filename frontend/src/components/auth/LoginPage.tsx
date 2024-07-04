@@ -1,18 +1,18 @@
-import {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
-import LoginModel from "../../models/login_model.ts";
-import {LoginValidationSchema} from "../../models/schemas.ts";
-import {Label} from "flowbite-react";
+import {useEffect, useState} from "react"
+import {useNavigate} from "react-router-dom"
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
+import LoginModel from "../../models/login_model.ts"
+import {LoginValidationSchema} from "../../models/schemas.ts"
+import {Label} from "flowbite-react"
 import './loginpage.css'
-import {HiOutlineLockClosed} from "react-icons/hi";
-import http_common from "../../common/http_common.ts";
-import {AxiosError} from "axios";
+import {HiOutlineLockClosed} from "react-icons/hi"
+import http_common from "../../common/http_common.ts"
+import {AxiosError} from "axios"
 
 const initialValues = {
     email: "",
     password: "",
-};
+}
 
 export default function LoginPage() {
     const navigate = useNavigate()
@@ -44,7 +44,7 @@ export default function LoginPage() {
         finally {
             setSubmitting(false)
         }
-    };
+    }
 
     return (
         <Formik

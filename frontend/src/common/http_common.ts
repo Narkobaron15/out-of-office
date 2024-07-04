@@ -1,5 +1,5 @@
-import axios from "axios";
-import APP_ENV from "./env.ts";
+import axios from "axios"
+import APP_ENV from "./env.ts"
 
 const http_common = axios.create({
     baseURL: APP_ENV.BASE_URL,

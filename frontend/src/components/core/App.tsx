@@ -3,7 +3,9 @@ import {Route, Routes} from 'react-router-dom'
 import Layout from './layout/Layout.tsx'
 import HomePage from './HomePage.tsx'
 import NotFoundPage from './NotFoundPage.tsx'
-import LoginPage from "../auth/LoginPage.tsx";
+import LoginPage from "../auth/LoginPage.tsx"
+import AboutPage from "../info/AboutPage.tsx"
+import ContactPage from "../info/ContactPage.tsx";
 
 export default function App() {
     return (
@@ -11,6 +13,9 @@ export default function App() {
             <Route path='/' element={<Layout/>}>
                 <Route index element={<HomePage/>}/>
                 <Route path='login' element={<LoginPage/>}/>
+                <Route path='about' element={<AboutPage/>}/>
+                <Route path='contact' element={<ContactPage/>}/>
+                {/*<Route path='account' element={<AccountPage/>}/>*/}
                 {/*<Route path='employees' element={<EmployeesPage/>}>
                         <Route path=':id'>
                             <Route index element={<EmployeePage/>}/>
