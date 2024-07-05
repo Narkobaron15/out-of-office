@@ -1,9 +1,9 @@
 import './account_page.css'
-import {Badge, Card, Spinner} from "flowbite-react";
-import {useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
-import http_common from "../../common/http_common.ts";
-import EmployeeModel from "../../models/employee_model.ts";
+import {Badge, Card, Spinner} from "flowbite-react"
+import {useEffect, useState} from "react"
+import {Link, useNavigate} from "react-router-dom"
+import http_common from "../../common/http_common.ts"
+import EmployeeModel from "../../models/employee_model.ts"
 
 const placeholderImage = "https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png"
 

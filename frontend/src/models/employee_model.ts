@@ -1,6 +1,6 @@
-import ProjectModel from "./project_model.ts";
-import Subdivision from "./subdivision.ts";
-import Position from "./position.ts";
+import ProjectModel from "./project_model.ts"
+import Subdivision from "./subdivision.ts"
+import Position from "./position.ts"
 
 export default class EmployeeModel {
     id: string

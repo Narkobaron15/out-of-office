@@ -1,27 +1,27 @@
 import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
-import EmployeeModel from "../../../models/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
+import ApprovalRequestModel from "../../../models/approval_request.ts"
 
-export default function EmployeePage() {
+export default function ApprovalRequestPage() {
     const {id} = useParams()
-    const [employee, setEmployee] = useState<EmployeeModel | null>()
+    const [request, setRequest] = useState<ApprovalRequestModel | null>()
     const navigate = useNavigate()
 
     useEffect(() => {
         // TODO: Add an error toast
 
-        http_common.get(`employees/${id}`)
-            .then(({data}) => setEmployee(new EmployeeModel(data)))
+        http_common.get(`approval-requests/${id}`)
+            .then(({data}) => setRequest(new ApprovalRequestModel(data)))
             .catch(() => {
                 navigate(-1)
             })
     }, [])
 
-    return employee ? (
+    return request ? (
         <div>
-            <h1>Employee {id}</h1>
-            <p>Employee details</p>
+            <h1>Request {id}</h1>
+            <p>Request details</p>
         </div>
     ) : (
         // TODO: Add a spinner

@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react"
-import EmployeeModel from "../../../models/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
+import ApprovalRequestModel from "../../../models/approval_request.ts";
 
-export default function EmployeesPage() {
-    const [employees, setEmployees] = useState<EmployeeModel[] | null>()
+export default function ApprovalRequestsPage() {
+    const [requests, setRequests] = useState<ApprovalRequestModel[] | null>()
     const auth = localStorage.getItem('auth')
     const navigate = useNavigate()
 
@@ -15,16 +15,16 @@ export default function EmployeesPage() {
         }
 
         http_common.get('employees')
-            .then(({data}) => setEmployees(data.data))
+            .then(({data}) => setRequests(data.data))
             .catch(() => {
                 navigate('/')
             })
-    }, [])
+    }, []);
 
-    return employees ? (
+    return requests ? (
         <div>
-            <h1>Employees</h1>
-            <p>Employees list</p>
+            <h1>Approval requests</h1>
+            <p>Approval requests list</p>
         </div>
     ) : (
         // TODO: Spinner
