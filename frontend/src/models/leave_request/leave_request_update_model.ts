@@ -1,29 +1,24 @@
-import EmployeeModel from "../employee/employee_model.ts"
 import Status from "../status.ts"
-import AbsenceReason from "./absence_reason.ts"
+import AbsenceReason from "../absence_reason.ts";
 
-export default class LeaveRequestModel {
+export default class LeaveRequestUpdateModel {
     id: string
-    employee: EmployeeModel
+    employeeId: string
     absenceReason: AbsenceReason
     start: Date
     end: Date
     shortName: string
     comment: string | null
     status: Status
-    createdAt: Date
-    updatedAt: Date
 
-    constructor(model: LeaveRequestModel) {
+    constructor(model: LeaveRequestUpdateModel) {
         this.id = model.id
-        this.employee = model.employee
+        this.employeeId = model.employeeId
         this.absenceReason = model.absenceReason
         this.start = model.start
         this.end = model.end
         this.shortName = model.shortName
         this.comment = model.comment
         this.status = model.status
-        this.createdAt = model.createdAt
-        this.updatedAt = model.updatedAt
     }
 }

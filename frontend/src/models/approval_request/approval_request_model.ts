@@ -1,5 +1,5 @@
 import EmployeeModel from "../employee/employee_model.ts"
-import LeaveRequestModel from "../leave_request/leave_request.ts"
+import LeaveRequestModel from "../leave_request/leave_request_model.ts"
 import Status from "../status.ts"
 
 export default class ApprovalRequestModel {

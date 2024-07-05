@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
-import ProjectModel from "../../../models/project_model.ts"
+import ProjectModel from "../../../models/project/project_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 
 export default function ProjectPage() {
