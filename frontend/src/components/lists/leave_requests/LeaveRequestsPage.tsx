@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
-import LeaveRequestModel from "../../../models/leave_request.ts";
+import LeaveRequestModel from "../../../models/leave_request.ts"
 
 export default function LeaveRequestsPage() {
     const [request, setRequest] = useState<LeaveRequestModel[] | null>()

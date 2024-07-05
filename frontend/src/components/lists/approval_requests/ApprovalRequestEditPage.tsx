@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
-import ApprovalRequestModel from "../../../models/approval_request.ts";
+import ApprovalRequestModel from "../../../models/approval_request.ts"
 
 export default function ApprovalRequestEditPage() {
     const {id} = useParams()
@@ -16,7 +16,7 @@ export default function ApprovalRequestEditPage() {
             .catch(() => {
                 navigate(-1)
             })
-    }, []);
+    }, [])
 
     return request ? (
         <div>

@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
-import ProjectModel from "../../../models/project_model.ts";
+import ProjectModel from "../../../models/project_model.ts"
 
 export default function ProjectsPage() {
     const [projects, setProjects] = useState<ProjectModel[] | null>()
