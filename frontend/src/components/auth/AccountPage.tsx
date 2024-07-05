@@ -1,14 +1,14 @@
 import './account_page.css'
 import {Badge, Card, Spinner} from "flowbite-react";
 import {useEffect, useState} from "react";
-import {AccountModel} from "../../models/account_model.ts";
 import {Link, useNavigate} from "react-router-dom";
 import http_common from "../../common/http_common.ts";
+import EmployeeModel from "../../models/employee_model.ts";
 
 const placeholderImage = "https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png"
 
 export default function AccountPage() {
-    const [account, setAccount] = useState<AccountModel | null>(null)
+    const [account, setAccount] = useState<EmployeeModel | null>(null)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -63,12 +63,12 @@ export default function AccountPage() {
 
                 <section>
                     <h4>Account Activity</h4>
-                    <p>Created At: {new Date(account.createdAt).toLocaleDateString()}</p>
+                    <p>Created At: {account.createdAt.toLocaleDateString()}</p>
                     <p>
                         Updated At:&nbsp;
                         {
                             account.updatedAt
-                            ? new Date(account.updatedAt).toLocaleDateString()
+                            ? account.updatedAt.toLocaleDateString()
                             : "Never"
                         }
                     </p>
