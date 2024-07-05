@@ -40,36 +40,36 @@ export default function App() {
                 // Lists
                 <Route path="approval-requests">
                     <Route index element={<ApprovalRequestsPage/>}/>
+                    <Route path="create" element={<ApprovalRequestCreatePage/>}/>
                     <Route path=":id">
                         <Route index element={<ApprovalRequestPage/>}/>
-                        <Route path="create" element={<ApprovalRequestCreatePage/>}/>
                         <Route path="edit" element={<ApprovalRequestEditPage/>}/>
                     </Route>
                 </Route>
                 <Route path="employees">
                     <Route index element={<EmployeesPage/>}/>
+                    <Route path="create" element={<EmployeeCreatePage/>}/>
                     <Route path=":id">
                         <Route index element={<EmployeePage/>}/>
-                        <Route path="create" element={<EmployeeCreatePage/>}/>
                         <Route path="edit" element={<EmployeeEditPage/>}/>
                     </Route>
                 </Route>
                 <Route path="leave-requests">
                     <Route index element={<LeaveRequestsPage/>}/>
+                    <Route path="create" element={<LeaveRequestCreatePage/>}/>
                     <Route path=":id">
                         <Route index element={<LeaveRequestPage/>}/>
-                        <Route path="create" element={<LeaveRequestCreatePage/>}/>
                         <Route path="edit" element={<LeaveRequestEditPage/>}/>
                     </Route>
                 </Route>
                 <Route path="projects">
                     <Route index element={<ProjectsPage/>}/>
+                    <Route path="create" element={<ProjectCreatePage/>}/>
                     <Route path=":id">
                         <Route index element={<ProjectPage/>}/>
-                        <Route path="create" element={<ProjectCreatePage/>}/>
                         <Route path="edit" element={<ProjectEditPage/>}/>
                     </Route>
-                </Route>*
+                </Route>
             </Route>
 
             // Generic not found page
