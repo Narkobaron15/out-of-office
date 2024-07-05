@@ -1,4 +1,4 @@
-import EmployeeModel from "./employee_model.ts"
+import EmployeeModel from "../employee/employee_model.ts"
 import ProjectType from "./project_type.ts"
 
 export default class ProjectModel {

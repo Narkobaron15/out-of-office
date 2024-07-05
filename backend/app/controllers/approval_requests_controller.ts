@@ -55,13 +55,18 @@ export default class ApprovalRequestsController {
   /**
    * Approve the request
    */
-  async approve({ bouncer, params, response }: HttpContext) {
+  async approve({ auth, bouncer, params, response }: HttpContext) {
     await bouncer.with('ApprovalRequestPolicy').authorize('approve')
+    const user = await auth.authenticate()
 
     try {
       const req = await ApprovalRequest.findOrFail(params.id)
+      if (req.approverId !== user.id) {
+        return response.forbidden()
+      }
       req.merge({ status: Status.APPROVED })
       await req.save()
+
       return req
     } catch (error) {
       return response.notFound()

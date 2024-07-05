@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react"
 import {useNavigate} from "react-router-dom"
 import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
-import LoginModel from "../../models/login_model.ts"
-import {LoginValidationSchema} from "../../models/schemas.ts"
+import LoginModel from "../../models/employee/login_model.ts"
+import {LoginValidationSchema} from "./schemas.ts"
 import {Label} from "flowbite-react"
 import './login_page.css'
 import {HiOutlineLockClosed} from "react-icons/hi"

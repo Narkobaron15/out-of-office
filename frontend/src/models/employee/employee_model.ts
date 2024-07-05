@@ -1,4 +1,4 @@
-import ProjectModel from "./project_model.ts"
+import ProjectModel from "../project/project_model.ts"
 import Subdivision from "./subdivision.ts"
 import Position from "./position.ts"
 

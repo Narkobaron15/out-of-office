@@ -1,5 +1,5 @@
-import EmployeeModel from "./employee_model.ts"
-import Status from "./status.ts"
+import EmployeeModel from "../employee/employee_model.ts"
+import Status from "../status.ts"
 import AbsenceReason from "./absence_reason.ts"
 
 export default class LeaveRequestModel {

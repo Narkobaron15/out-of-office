@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react"
-import EmployeeModel from "../../../models/employee_model.ts"
+import EmployeeModel from "../../../models/employee/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
 import {FaEye} from "react-icons/fa6"
 import {FaEdit} from "react-icons/fa"
+import './css/employees.css'
 
 export default function EmployeesPage() {
     const [employees, setEmployees] = useState<EmployeeModel[] | null>()

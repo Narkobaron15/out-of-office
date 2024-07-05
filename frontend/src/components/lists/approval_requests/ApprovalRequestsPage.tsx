@@ -1,9 +1,32 @@
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
-import {useNavigate} from "react-router-dom"
-import ApprovalRequestModel from "../../../models/approval_request.ts"
+import {Link, useNavigate} from "react-router-dom"
+import ApprovalRequestModel from "../../../models/approval_request/approval_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
+
+const handleApprove = (id: string) => {
+    http_common.post(`approval-requests/approve?id=${id}`)
+        .then(() => {
+            window.location.reload()
+        })
+        .catch((err) => {
+            console.error(err)
+            // TODO: Add an error toast
+        })
+}
+
+const handleReject = (id: string) => {
+    http_common.post(`approval-requests/reject?id=${id}`)
+        .then(() => {
+            window.location.reload()
+        })
+        .catch((err) => {
+                console.error(err)
+                // TODO: Add an error toast
+            },
+        )
+}
 
 export default function ApprovalRequestsPage() {
     const [requests, setRequests] = useState<ApprovalRequestModel[] | null>()
@@ -25,7 +48,48 @@ export default function ApprovalRequestsPage() {
 
     return requests ? (
         requests.length > 0 ? (
-            <></>
+            <div className="approvals-container">
+                <h1>Approval Requests</h1>
+                <div className="overflow-x-auto">
+                    <table>
+                        <thead>
+                        <tr className="bg-gray-200 text-left">
+                            <th>ID</th>
+                            <th>Approver</th>
+                            <th>Leave Request</th>
+                            <th>Status</th>
+                            <th>Short Name</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {requests.map((request) => (
+                            <tr key={request.id} className="border-t">
+                                <td>{request.id}</td>
+                                <td>{request.approver.fullName}</td>
+                                <td>{request.leaveRequest.id}</td>
+                                <td>{request.status}</td>
+                                <td>{request.shortName}</td>
+                                <td>
+                                    <Button pill gradientDuoTone="purpleToBlue"
+                                            onClick={() => handleApprove(request.id)}>
+                                        Approve
+                                    </Button>
+                                    <Button pill gradientDuoTone="purpleToBlue"
+                                            onClick={() => handleReject(request.id)}>
+                                        Reject
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+                <Link to="/approval-requests/create"
+                      className="bg-blue-500 text-white py-2 px-4 rounded mt-4 inline-block">
+                    Create Approval Request
+                </Link>
+            </div>
         ) : (
             <div className="m-8">
                 <h2 className="font-bold text-4xl mb-5" role="alert">

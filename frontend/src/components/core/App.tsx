@@ -12,9 +12,7 @@ import EmployeePage from "../lists/employees/EmployeePage.tsx"
 import EmployeeCreatePage from "../lists/employees/EmployeeCreatePage.tsx"
 import EmployeeEditPage from "../lists/employees/EmployeeEditPage.tsx"
 import ApprovalRequestsPage from "../lists/approval_requests/ApprovalRequestsPage.tsx"
-import ApprovalRequestPage from "../lists/approval_requests/ApprovalRequestPage.tsx"
 import ApprovalRequestCreatePage from "../lists/approval_requests/ApprovalRequestCreatePage.tsx"
-import ApprovalRequestEditPage from "../lists/approval_requests/ApprovalRequestEditPage.tsx"
 import LeaveRequestsPage from "../lists/leave_requests/LeaveRequestsPage.tsx"
 import LeaveRequestPage from "../lists/leave_requests/LeaveRequestPage.tsx"
 import LeaveRequestCreatePage from "../lists/leave_requests/LeaveRequestCreatePage.tsx"
@@ -41,10 +39,6 @@ export default function App() {
                 <Route path="approval-requests">
                     <Route index element={<ApprovalRequestsPage/>}/>
                     <Route path="create" element={<ApprovalRequestCreatePage/>}/>
-                    <Route path=":id">
-                        <Route index element={<ApprovalRequestPage/>}/>
-                        <Route path="edit" element={<ApprovalRequestEditPage/>}/>
-                    </Route>
                 </Route>
                 <Route path="employees">
                     <Route index element={<EmployeesPage/>}/>

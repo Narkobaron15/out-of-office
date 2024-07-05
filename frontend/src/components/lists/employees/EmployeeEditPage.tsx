@@ -2,10 +2,10 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {initialValues, defaultPic} from "./validations/initial_values.ts";
-import {ErrorMessage, Field, Form, Formik} from "formik";
-import validationSchema from "./validations/schemas.ts";
-import EmployeeUpdateModel from "../../../models/employee_update_model.ts";
+import {initialValues, defaultPic} from "./validations/initial_values.ts"
+import {ErrorMessage, Field, Form, Formik} from "formik"
+import validationSchema from "./validations/schemas.ts"
+import EmployeeUpdateModel from "../../../models/employee/employee_update_model.ts"
 
 export default function EmployeeEditPage() {
     const {id} = useParams()
@@ -105,10 +105,10 @@ export default function EmployeeEditPage() {
                                 <span className="sr-only">Choose a category photo</span>
                                 <input className="file w-5/6" aria-describedby="file_input_help" id="image" name="image"
                                        type="file" onChange={e => {
-                                    const files = e.target.files;
-                                    if (!files || !(files instanceof FileList)) return;
-                                    const file = files[0];
-                                    setFieldValue("avatar", file);
+                                    const files = e.target.files
+                                    if (!files || !(files instanceof FileList)) return
+                                    const file = files[0]
+                                    setFieldValue("avatar", file)
                                 }}/>
                             </div>
                             <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG,

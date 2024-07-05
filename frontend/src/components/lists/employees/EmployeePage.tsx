@@ -1,9 +1,9 @@
 import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
-import EmployeeModel from "../../../models/employee_model.ts"
+import EmployeeModel from "../../../models/employee/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {Button} from "flowbite-react";
+import {Button} from "flowbite-react"
 
 export default function EmployeePage() {
     const {id} = useParams()

@@ -1,0 +1,15 @@
+.approvals-container {
+    @apply container mx-auto p-4;
+}
+
+.approvals-container h1 {
+    @apply text-2xl font-bold mb-4;
+}
+
+.approvals-container table {
+    @apply table-auto w-full bg-white rounded-lg shadow-md;
+}
+
+.approvals-container th, .approvals-container td {
+    @apply px-4 py-2;
+}

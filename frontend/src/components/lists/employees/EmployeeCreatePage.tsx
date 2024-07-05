@@ -2,8 +2,8 @@ import {useNavigate} from "react-router-dom"
 import http_common from "../../../common/http_common.ts"
 import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import {initialValues, defaultPic} from "./validations/initial_values.ts"
-import validationSchema from "./validations/schemas.ts";
-import EmployeeCreateModel from "../../../models/employee_create_model.ts";
+import validationSchema from "./validations/schemas.ts"
+import EmployeeCreateModel from "../../../models/employee/employee_create_model.ts"
 
 export default function EmployeeCreatePage() {
     const navigate = useNavigate()
@@ -74,9 +74,9 @@ export default function EmployeeCreatePage() {
                                 <span className="sr-only">Choose a category photo</span>
                                 <input className="file w-5/6" aria-describedby="file_input_help" id="image" name="image"
                                        type="file" onChange={e => {
-                                    const files = e.target.files;
-                                    if (!files || !(files instanceof FileList)) return;
-                                    const file = files[0];
+                                    const files = e.target.files
+                                    if (!files || !(files instanceof FileList)) return
+                                    const file = files[0]
                                     setFieldValue("avatar", file)
                                         .catch(console.error)
                                 }}/>

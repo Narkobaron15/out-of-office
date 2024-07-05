@@ -1,6 +1,6 @@
-import EmployeeModel from "./employee_model.ts"
-import LeaveRequestModel from "./leave_request.ts"
-import Status from "./status.ts"
+import EmployeeModel from "../employee/employee_model.ts"
+import LeaveRequestModel from "../leave_request/leave_request.ts"
+import Status from "../status.ts"
 
 export default class ApprovalRequestModel {
     id: string
