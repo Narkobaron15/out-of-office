@@ -3,6 +3,8 @@ import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import LeaveRequestModel from "../../../models/leave_request/leave_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function LeaveRequestEditPage() {
     const {id} = useParams()
@@ -10,11 +12,10 @@ export default function LeaveRequestEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Add an error toast
-
         http_common.get(`leave-requests/${id}`)
             .then(({data}) => setRequest(new LeaveRequestModel(data)))
             .catch(() => {
+                toast.error('Some error happened', errorToastOptions)
                 navigate(-1)
             })
     }, [])

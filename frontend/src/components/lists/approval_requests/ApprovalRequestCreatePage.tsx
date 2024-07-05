@@ -3,6 +3,8 @@ import validationSchema from "./validations/schemas.ts"
 import ApprovalRequestCreateModel from "../../../models/approval_request/approval_request_create_model.ts"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function ApprovalRequestCreatePage() {
     const initialValues = {
@@ -25,7 +27,7 @@ export default function ApprovalRequestCreatePage() {
             })
             .catch(e => {
                 console.error(e)
-                // TODO: Add an error toast
+                toast.error('Some error happened', errorToastOptions)
             })
             .finally(() => {
                 setSubmitting(false)

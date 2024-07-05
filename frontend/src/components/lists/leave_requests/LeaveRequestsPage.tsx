@@ -4,6 +4,8 @@ import {useNavigate} from "react-router-dom"
 import LeaveRequestModel from "../../../models/leave_request/leave_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function LeaveRequestsPage() {
     const [requests, setRequests] = useState<LeaveRequestModel[] | null>()
@@ -11,14 +13,15 @@ export default function LeaveRequestsPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Add an error toast
         if (!auth) {
+            toast.error('Some error happened', errorToastOptions)
             navigate(-1)
         }
 
         http_common.get('leave-requests')
             .then(({data}) => setRequests(data.data))
             .catch(() => {
+                toast.error('Some error happened', errorToastOptions)
                 navigate('/')
             })
     }, [])

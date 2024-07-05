@@ -7,6 +7,8 @@ import {Button} from "flowbite-react"
 import {FaEye} from "react-icons/fa6"
 import {FaEdit} from "react-icons/fa"
 import './css/employees.css'
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function EmployeesPage() {
     const [employees, setEmployees] = useState<EmployeeModel[] | null>()
@@ -14,14 +16,15 @@ export default function EmployeesPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Add an error toast
         if (!auth) {
+            toast.error('Some error happened', errorToastOptions)
             navigate(-1)
         }
 
         http_common.get('employees')
             .then(({data}) => setEmployees(data.data))
             .catch(() => {
+                toast.error('Some error happened', errorToastOptions)
                 navigate('/')
             })
     }, [])

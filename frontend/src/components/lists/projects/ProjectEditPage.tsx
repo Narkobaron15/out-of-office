@@ -3,6 +3,8 @@ import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import ProjectModel from "../../../models/project/project_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function ProjectEditPage() {
     const {id} = useParams()
@@ -10,11 +12,10 @@ export default function ProjectEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Add an error toast
-
         http_common.get(`projects/${id}`)
             .then(({data}) => setProject(new ProjectModel(data)))
             .catch(() => {
+                toast.error('Some error happened', errorToastOptions)
                 navigate(-1)
             })
     }, [])

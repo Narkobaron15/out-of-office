@@ -6,6 +6,8 @@ import {initialValues, defaultPic} from "./validations/initial_values.ts"
 import {ErrorMessage, Field, Form, Formik} from "formik"
 import validationSchema from "./validations/schemas.ts"
 import EmployeeUpdateModel from "../../../models/employee/employee_update_model.ts"
+import {toast} from "react-toastify";
+import {errorToastOptions} from "../../common/toast_options.ts";
 
 export default function EmployeeEditPage() {
     const {id} = useParams()
@@ -14,14 +16,13 @@ export default function EmployeeEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        // TODO: Add an error toast
-
         http_common.get(`employees/${id}`)
             .then(({data}) => {
                 setEmployee(new EmployeeUpdateModel(data))
                 setInitialImg(data.pictureUrl)
             })
             .catch(() => {
+                toast.error('Some error happened', errorToastOptions)
                 navigate(-1)
             })
     }, [])
