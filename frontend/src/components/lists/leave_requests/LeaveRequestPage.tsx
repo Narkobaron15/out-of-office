@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import LeaveRequestModel from "../../../models/leave_request.ts"
+import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 
 export default function LeaveRequestPage() {
     const {id} = useParams()
@@ -23,8 +24,5 @@ export default function LeaveRequestPage() {
             <h1>Leave request {id}</h1>
             <p>Leave request details</p>
         </div>
-    ) : (
-        // TODO: Add a spinner
-        <></>
-    )
+    ) : <DefaultSpinner/>
 }

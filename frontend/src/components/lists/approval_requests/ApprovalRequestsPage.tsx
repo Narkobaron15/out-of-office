@@ -2,6 +2,8 @@ import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
 import ApprovalRequestModel from "../../../models/approval_request.ts"
+import DefaultSpinner from "../../common/DefaultSpinner.tsx"
+import {Button} from "flowbite-react"
 
 export default function ApprovalRequestsPage() {
     const [requests, setRequests] = useState<ApprovalRequestModel[] | null>()
@@ -22,12 +24,17 @@ export default function ApprovalRequestsPage() {
     }, [])
 
     return requests ? (
-        <div>
-            <h1>Approval requests</h1>
-            <p>Approval requests list</p>
-        </div>
-    ) : (
-        // TODO: Spinner
-        <></>
-    )
+        requests.length > 0 ? (
+            <></>
+        ) : (
+            <div className="m-8">
+                <h2 className="font-bold text-4xl mb-5" role="alert">
+                    No approval requests found
+                </h2>
+                <Button href="/employees/create" className="btn btn-primary inline-flex">
+                    Add a new approval request
+                </Button>
+            </div>
+        )
+    ) : <DefaultSpinner/>
 }

@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import ApprovalRequestModel from "../../../models/approval_request.ts"
+import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 
 export default function ApprovalRequestPage() {
     const {id} = useParams()
@@ -23,8 +24,5 @@ export default function ApprovalRequestPage() {
             <h1>Request {id}</h1>
             <p>Request details</p>
         </div>
-    ) : (
-        // TODO: Add a spinner
-        <></>
-    )
+    ) : <DefaultSpinner/>
 }
