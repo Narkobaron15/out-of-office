@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
-import ApprovalRequestModel from "../../../models/approval_request.ts";
+import LeaveRequestModel from "../../../models/leave_request.ts";
 
-export default function ApprovalRequestsPage() {
-    const [requests, setRequests] = useState<ApprovalRequestModel[] | null>()
+export default function LeaveRequestsPage() {
+    const [request, setRequest] = useState<LeaveRequestModel[] | null>()
     const auth = localStorage.getItem('auth')
     const navigate = useNavigate()
 
@@ -14,17 +14,17 @@ export default function ApprovalRequestsPage() {
             navigate(-1)
         }
 
-        http_common.get('approval-requests')
-            .then(({data}) => setRequests(data.data))
+        http_common.get('leave-requests')
+            .then(({data}) => setRequest(data.data))
             .catch(() => {
                 navigate('/')
             })
-    }, []);
+    }, [])
 
-    return requests ? (
+    return request ? (
         <div>
-            <h1>Approval requests</h1>
-            <p>Approval requests list</p>
+            <h1>Leave requests</h1>
+            <p>Leave requests list</p>
         </div>
     ) : (
         // TODO: Spinner
