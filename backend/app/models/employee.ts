@@ -50,7 +50,7 @@ export default class Employee extends compose(BaseModel, AuthFinder) {
   declare daysOff: number
 
   @column()
-  declare pictureUrl?: string
+  declare pictureUrl?: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

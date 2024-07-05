@@ -10,30 +10,27 @@ import sharp from 'sharp'
 sharp.cache(false)
 
 export default class EmployeesController {
-  private static readonly DEFAULT_AVATAR_URL =
-    'https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png'
-
   private static async uploadAvatar(request: Request, employee: Employee) {
     if (!request.file('avatar')) {
       // set a default picture
-      employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+      employee.pictureUrl = null
       return
     }
 
     const avatar = request.file('avatar', {
       size: '5mb',
-      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif']
+      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif'],
     })
 
     if (!avatar) {
       if (!employee.pictureUrl) {
-        employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+        employee.pictureUrl = null
       }
       return { error: 'No file was uploaded' }
     }
     if (!avatar.isValid) {
       if (!employee.pictureUrl) {
-        employee.pictureUrl = EmployeesController.DEFAULT_AVATAR_URL
+        employee.pictureUrl = null
       }
       return avatar.errors
     }
@@ -54,8 +51,8 @@ export default class EmployeesController {
     const [file] = await bucket.upload(`./tmp/compressed/${fileName}`, {
       destination: `avatars/${fileName}`,
       metadata: {
-        contentType: avatar.headers['content-type']
-      }
+        contentType: avatar.headers['content-type'],
+      },
     })
     // await file.makePublic()
     employee.pictureUrl = file.publicUrl()
@@ -67,7 +64,6 @@ export default class EmployeesController {
 
   private static async deleteAvatar(request: Request, employee: Employee, deleteAvatar = false) {
     if (!employee.pictureUrl) return
-    if (employee.pictureUrl === EmployeesController.DEFAULT_AVATAR_URL) return
 
     const shouldDelete =
       deleteAvatar ||
@@ -161,7 +157,7 @@ export default class EmployeesController {
       return response.notFound()
     }
 
-    await EmployeesController.deleteAvatar(request, employee)
+    await EmployeesController.deleteAvatar(request, employee, true)
     await employee.delete()
 
     return response.noContent()
