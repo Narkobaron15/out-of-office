@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, hasOne } from '@adonisjs/lucid/orm'
-import type { HasOne } from '@adonisjs/lucid/types/relations'
+import { BaseModel, beforeCreate, belongsTo, column } from '@adonisjs/lucid/orm'
+import type { BelongsTo } from '@adonisjs/lucid/types/relations'
 import Employee from '#models/employee'
 import LeaveRequest from '#models/leave_request'
 import Status from '#types/status'
@@ -10,11 +10,17 @@ export default class ApprovalRequest extends BaseModel {
   @column({ isPrimary: true })
   declare id: nodeCrypto.UUID
 
-  @hasOne(() => Employee)
-  declare approver: HasOne<typeof Employee>
+  @belongsTo(() => Employee, { foreignKey: 'approverId' })
+  declare approver: BelongsTo<typeof Employee>
 
-  @hasOne(() => LeaveRequest)
-  declare leaveRequest: HasOne<typeof LeaveRequest>
+  @column({ serializeAs: null })
+  declare approverId: nodeCrypto.UUID
+
+  @belongsTo(() => LeaveRequest)
+  declare leaveRequest: BelongsTo<typeof LeaveRequest>
+
+  @column({ serializeAs: null })
+  declare leaveRequestId: nodeCrypto.UUID
 
   @column()
   declare status: Status

@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column, hasOne, manyToMany } from '@adonisjs/lucid/orm'
+import { BaseModel, beforeCreate, belongsTo, column, manyToMany } from '@adonisjs/lucid/orm'
 import ProjectType from '#types/project_type'
 import Employee from '#models/employee'
-import type { HasOne, ManyToMany } from '@adonisjs/lucid/types/relations'
+import type { BelongsTo, ManyToMany } from '@adonisjs/lucid/types/relations'
 import * as nodeCrypto from 'node:crypto'
 
 export default class Project extends BaseModel {
@@ -21,8 +21,8 @@ export default class Project extends BaseModel {
   @column.date()
   declare end: DateTime
 
-  @hasOne(() => Employee)
-  declare manager: HasOne<typeof Employee>
+  @belongsTo(() => Employee)
+  declare manager: BelongsTo<typeof Employee>
 
   @column()
   declare comment?: string
