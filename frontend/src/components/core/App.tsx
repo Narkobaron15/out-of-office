@@ -19,6 +19,10 @@ import LeaveRequestsPage from "../lists/leave_requests/LeaveRequestsPage.tsx";
 import LeaveRequestPage from "../lists/leave_requests/LeaveRequestPage.tsx";
 import LeaveRequestCreatePage from "../lists/leave_requests/LeaveRequestCreatePage.tsx";
 import LeaveRequestEditPage from "../lists/leave_requests/LeaveRequestEditPage.tsx";
+import ProjectsPage from "../lists/projects/ProjectsPage.tsx";
+import ProjectPage from "../lists/projects/ProjectPage.tsx";
+import ProjectCreatePage from "../lists/projects/ProjectCreatePage.tsx";
+import ProjectEditPage from "../lists/projects/ProjectEditPage.tsx";
 
 export default function App() {
     return (
