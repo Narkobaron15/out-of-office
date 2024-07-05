@@ -1,0 +1,15 @@
+.employees-list {
+    @apply container mx-auto p-4;
+}
+
+.employees-list h1 {
+    @apply text-2xl font-bold mb-4;
+}
+
+.employees-list table {
+    @apply table-auto w-full bg-white rounded-lg shadow-md;
+}
+
+.employees-list th, .employees-list td {
+    @apply px-4 py-2;
+}

@@ -26,6 +26,9 @@ export default function HomePage() {
                     <Button pill gradientDuoTone="purpleToBlue" href="/leave-requests">
                         Leave requests
                     </Button>
+                    <Button pill gradientDuoTone="purpleToBlue" href="/employees">
+                        Employees
+                    </Button>
                     <Button pill gradientDuoTone="purpleToBlue" href="/projects">
                         Projects
                     </Button>
