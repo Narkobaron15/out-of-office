@@ -9,6 +9,7 @@
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from '#start/kernel'
+
 const SessionController = () => import('#controllers/session_controller')
 const NotFoundController = () => import('#controllers/not_found_controller')
 const ApprovalRequestsController = () => import('#controllers/approval_requests_controller')
@@ -32,10 +33,15 @@ router
     router
       .group(() => {
         router.get('check', [SessionController, 'check']).prefix('auth')
+
         router.resource('employees', EmployeesController).apiOnly()
+
         router.resource('projects', ProjectsController).apiOnly()
-        router.get('projects/assign', [ProjectsController, 'assign'])
+        router.post('projects/assign', [ProjectsController, 'assign'])
+        router.post('projects/unassign', [ProjectsController, 'unassign'])
+
         router.resource('leave-requests', LeaveRequestsController).apiOnly()
+
         router // approval requests
           .group(() => {
             router.get('', [ApprovalRequestsController, 'index'])

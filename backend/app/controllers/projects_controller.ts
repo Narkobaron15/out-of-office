@@ -126,7 +126,13 @@ export default class ProjectsController {
    * Assign a project to an employee
    */
   async assign({ bouncer, request, response }: HttpContext) {
-    const project = await Project.findOrFail(request.all().project_id)
+    let project: Project | null
+    try {
+      project = await Project.findOrFail(request.all().project_id)
+    } catch (error) {
+      return response.notFound('Project not found')
+    }
+
     await bouncer.with('ProjectPolicy').authorize('assign', project)
 
     let employee: Employee | null
@@ -140,6 +146,30 @@ export default class ProjectsController {
     }
 
     await project.related('employees').attach([employee.id])
+    return response.noContent()
+  }
+
+  /**
+   * Remove an employee from a project
+   */
+  async unassign({ bouncer, request, response }: HttpContext) {
+    let project: Project | null
+    try {
+      project = await Project.findOrFail(request.all().project_id)
+    } catch (error) {
+      return response.notFound('Project not found')
+    }
+
+    await bouncer.with('ProjectPolicy').authorize('assign', project)
+
+    let employee: Employee | null
+    try {
+      employee = await Employee.findOrFail(request.all().employee_id)
+    } catch (error) {
+      return response.notFound('Employee not found')
+    }
+
+    await project.related('employees').detach([employee.id])
     return response.noContent()
   }
 }
