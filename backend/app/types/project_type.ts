@@ -1,11 +1,11 @@
 enum ProjectType {
-  Web = 'web',
-  Mobile = 'mobile',
-  Desktop = 'desktop',
-  Embedded = 'embedded',
-  CrossPlatform = 'cross-platform',
-  Game = 'game',
-  Other = 'other',
+  Web = 'WEB',
+  Mobile = 'MOBILE',
+  Desktop = 'DESKTOP',
+  Embedded = 'EMBEDDED',
+  CrossPlatform = 'CROSS_PLATFORM',
+  Game = 'GAME',
+  Other = 'OTHER',
 }
 
 export default ProjectType

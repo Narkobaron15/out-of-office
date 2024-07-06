@@ -1,6 +1,6 @@
 import {ToastOptions} from "react-toastify";
 
-const errorToastOptions: ToastOptions = {
+const toastOptions: ToastOptions = {
     position: "top-right",
     autoClose: 5000,
     hideProgressBar: false,
@@ -9,4 +9,4 @@ const errorToastOptions: ToastOptions = {
     draggable: true,
 }
 
-export { errorToastOptions }
+export { toastOptions }

@@ -1,10 +1,10 @@
 enum Status {
-  INDETERMINATE = 'Indeterminate',
-  NEW = 'New',
-  IN_REVIEW = 'In review',
-  APPROVED = 'Approved',
-  REJECTED = 'Rejected',
-  CANCELLED = 'Cancelled',
+  INDETERMINATE = 'INDETERMINATE',
+  NEW = 'NEW',
+  IN_REVIEW = 'IN_REVIEW',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED',
+  CANCELLED = 'CANCELLED',
 }
 
 export default Status

@@ -1,10 +1,10 @@
 enum AbsenceReason {
-  SICKNESS = 'Sickness',
-  VACATION = 'Vacation',
-  PERSONAL = 'Personal',
-  TRAINING = 'Training',
-  MATERNITY_LEAVE = 'Maternity leave',
-  OTHER = 'Other',
+  SICKNESS = 'SICKNESS',
+  VACATION = 'VACATION',
+  PERSONAL = 'PERSONAL',
+  TRAINING = 'TRAINING',
+  MATERNITY_LEAVE = 'MATERNITY_LEAVE',
+  OTHER = 'OTHER',
 }
 
 export default AbsenceReason

@@ -1,11 +1,11 @@
 enum Subdivision {
   HR = 'HR',
   IT = 'IT',
-  MARKETING = 'Marketing',
-  SALES = 'Sales',
-  SUPPORT = 'Support',
-  RELATIONS = 'Relations',
-  INDETERMINATE = 'Indeterminate',
+  MARKETING = 'MARKETING',
+  SALES = 'SALES',
+  SUPPORT = 'SUPPORT',
+  RELATIONS = 'RELATIONS',
+  INDETERMINATE = 'INDETERMINATE',
 }
 
 export default Subdivision
