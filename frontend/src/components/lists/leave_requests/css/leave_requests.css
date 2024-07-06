@@ -1,0 +1,23 @@
+.leave-requests, .leave-request {
+    @apply container mx-auto p-4;
+}
+
+.leave-requests h1, .leave-request h1 {
+    @apply text-2xl font-bold mb-4;
+}
+
+.leave-requests .btn {
+    @apply p-2 rounded text-white;
+}
+
+.leave-requests table {
+    @apply min-w-full bg-white;
+}
+
+.leave-requests th, .leave-requests td {
+    @apply py-2 px-4;
+}
+
+.view-page-link {
+    @apply mt-4 inline-block text-white bg-blue-500 px-4 py-2 rounded;
+}
