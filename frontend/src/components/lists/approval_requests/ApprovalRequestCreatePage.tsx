@@ -3,8 +3,9 @@ import validationSchema from "./validations/schemas.ts"
 import ApprovalRequestCreateModel from "../../../models/approval_request/approval_request_create_model.ts"
 import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
-import {toast} from "react-toastify";
-import {errorToastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
+import checkAuth from "../check_auth.ts";
 
 export default function ApprovalRequestCreatePage() {
     const initialValues = {
@@ -27,12 +28,16 @@ export default function ApprovalRequestCreatePage() {
             })
             .catch(e => {
                 console.error(e)
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
             })
             .finally(() => {
                 setSubmitting(false)
             })
     }
+
+    checkAuth(navigate)
+
+    // TODO: Add dropdowns for leaveRequestId and approverId
 
     return (
         <div className="container mx-auto p-4">

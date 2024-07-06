@@ -4,6 +4,9 @@ import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import {initialValues, defaultPic} from "./validations/initial_values.ts"
 import validationSchema from "./validations/schemas.ts"
 import EmployeeCreateModel from "../../../models/employee/employee_create_model.ts"
+import {useEffect} from "react";
+import {toast} from "react-toastify";
+import {toastOptions} from "../../common/toast_options.ts";
 
 export default function EmployeeCreatePage() {
     const navigate = useNavigate()
@@ -24,6 +27,20 @@ export default function EmployeeCreatePage() {
                 setSubmitting(false)
             })
     }
+
+    useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.data.position === 'EMPLOYEE') {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+    }, [])
 
     return (
         <div className="container mx-auto p-4">

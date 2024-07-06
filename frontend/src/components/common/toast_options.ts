@@ -1,4 +1,4 @@
-import {ToastOptions} from "react-toastify";
+import {ToastOptions} from "react-toastify"
 
 const toastOptions: ToastOptions = {
     position: "top-right",

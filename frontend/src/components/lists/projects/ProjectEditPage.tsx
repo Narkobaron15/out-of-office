@@ -2,12 +2,12 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {toast} from "react-toastify";
-import {toastOptions} from "../../common/toast_options.ts";
-import ProjectUpdateModel from "../../../models/project/project_update_model.ts";
-import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
-import projectSchema from "./validations/schemas.ts";
-import {Button} from "flowbite-react";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
+import ProjectUpdateModel from "../../../models/project/project_update_model.ts"
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
+import projectSchema from "./validations/schemas.ts"
+import {Button} from "flowbite-react"
 
 export default function ProjectEditPage() {
     const {id} = useParams()
@@ -15,6 +15,18 @@ export default function ProjectEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.data.position !== 'HR_MANAGER') {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+
         http_common.get(`projects/${id}`)
             .then(({data}) => setProject(new ProjectUpdateModel(data)))
             .catch(() => {

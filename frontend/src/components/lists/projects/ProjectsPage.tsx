@@ -4,8 +4,8 @@ import {Link, useNavigate} from "react-router-dom"
 import ProjectModel from "../../../models/project/project_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
-import {toast} from "react-toastify";
-import {toastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
 
 export default function ProjectsPage() {
     const [projects, setProjects] = useState<ProjectModel[] | null>()

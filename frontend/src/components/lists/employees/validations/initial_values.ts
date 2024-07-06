@@ -1,6 +1,6 @@
-import EmployeeModel from "../../../../models/employee/employee_model.ts";
-import Subdivision from "../../../../models/employee/subdivision.ts";
-import Position from "../../../../models/employee/position.ts";
+import EmployeeModel from "../../../../models/employee/employee_model.ts"
+import Subdivision from "../../../../models/employee/subdivision.ts"
+import Position from "../../../../models/employee/position.ts"
 
 const initialValues = new EmployeeModel({
     id: '',

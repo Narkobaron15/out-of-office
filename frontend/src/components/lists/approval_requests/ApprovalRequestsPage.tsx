@@ -4,8 +4,8 @@ import {Link, useNavigate} from "react-router-dom"
 import ApprovalRequestModel from "../../../models/approval_request/approval_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
-import {toast} from "react-toastify";
-import {errorToastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
 
 const handleApprove = (id: string) => {
     http_common.post(`approval-requests/approve?id=${id}`)
@@ -14,7 +14,7 @@ const handleApprove = (id: string) => {
         })
         .catch((err) => {
             console.error(err)
-            toast.error('Some error happened', errorToastOptions)
+            toast.error('Some error happened', toastOptions)
         })
 }
 
@@ -25,7 +25,7 @@ const handleReject = (id: string) => {
         })
         .catch((err) => {
                 console.error(err)
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
             },
         )
 }
@@ -37,14 +37,14 @@ export default function ApprovalRequestsPage() {
 
     useEffect(() => {
         if (!auth) {
-            toast.error('Some error happened', errorToastOptions)
+            toast.error('Some error happened', toastOptions)
             navigate(-1)
         }
 
         http_common.get('approval-requests')
             .then(({data}) => setRequests(data.data))
             .catch(() => {
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
                 navigate('/')
             })
     }, [])

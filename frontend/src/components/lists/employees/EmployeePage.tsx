@@ -4,8 +4,8 @@ import EmployeeModel from "../../../models/employee/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
-import {toast} from "react-toastify";
-import {errorToastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
 
 export default function EmployeePage() {
     const {id} = useParams()
@@ -16,7 +16,7 @@ export default function EmployeePage() {
         http_common.get(`employees/${id}`)
             .then(({data}) => setEmployee(new EmployeeModel(data)))
             .catch(() => {
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
                 navigate(-1)
             })
     }, [])
@@ -27,7 +27,7 @@ export default function EmployeePage() {
                 navigate('/employees')
             })
             .catch(() => {
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
                 navigate(-1)
             })
     }

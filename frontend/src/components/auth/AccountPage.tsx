@@ -5,8 +5,8 @@ import {Link, useNavigate} from "react-router-dom"
 import http_common from "../../common/http_common.ts"
 import EmployeeModel from "../../models/employee/employee_model.ts"
 import DefaultSpinner from "../common/DefaultSpinner.tsx"
-import {toast} from "react-toastify";
-import {errorToastOptions} from "../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../common/toast_options.ts"
 
 const placeholderImage = "https://img.icons8.com/?size=128&id=tZuAOUGm9AuS&format=png"
 
@@ -25,7 +25,7 @@ export default function AccountPage() {
             .catch((error) => {
                 if (error.code === 'ERR_NETWORK' || error.code === 'ECONNREFUSED') {
                     console.error('Network error')
-                    toast.error('Network error', errorToastOptions)
+                    toast.error('Network error', toastOptions)
                 } else {
                     localStorage.removeItem('auth')
                     navigate('/login')

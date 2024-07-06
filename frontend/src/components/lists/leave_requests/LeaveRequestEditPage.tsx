@@ -2,13 +2,13 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {toast} from "react-toastify";
-import {toastOptions} from "../../common/toast_options.ts";
-import validationSchema from "./validations/schemas.ts";
-import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
-import EmployeeModel from "../../../models/employee/employee_model.ts";
-import LeaveRequestUpdateModel from "../../../models/leave_request/leave_request_update_model.ts";
-import {Button} from "flowbite-react";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
+import validationSchema from "./validations/schemas.ts"
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
+import EmployeeModel from "../../../models/employee/employee_model.ts"
+import LeaveRequestUpdateModel from "../../../models/leave_request/leave_request_update_model.ts"
+import {Button} from "flowbite-react"
 
 export default function LeaveRequestEditPage() {
     const {id} = useParams()
@@ -17,6 +17,18 @@ export default function LeaveRequestEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.data.position !== 'EMPLOYEE') {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+
         http_common.get(`leave-requests/${id}`)
             .then(({data}) => setRequest(new LeaveRequestUpdateModel(data)))
             .catch(() => {

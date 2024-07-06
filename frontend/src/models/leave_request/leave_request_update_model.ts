@@ -1,5 +1,5 @@
 import Status from "../status.ts"
-import AbsenceReason from "../absence_reason.ts";
+import AbsenceReason from "../absence_reason.ts"
 
 export default class LeaveRequestUpdateModel {
     id: string

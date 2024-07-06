@@ -4,8 +4,8 @@ import {Link, useNavigate} from "react-router-dom"
 import LeaveRequestModel from "../../../models/leave_request/leave_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
-import {toast} from "react-toastify";
-import {toastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
 import './css/leave_requests.css'
 
 export default function LeaveRequestsPage() {
@@ -35,6 +35,7 @@ export default function LeaveRequestsPage() {
             })
             .catch(() => {
                 toast.error('Some error happened', toastOptions)
+                window.location.reload()
             })
     }
 

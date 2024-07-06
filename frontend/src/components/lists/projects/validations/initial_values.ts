@@ -1,5 +1,5 @@
-import ProjectCreateModel from "../../../../models/project/project_create_model.ts";
-import ProjectType from "../../../../models/project/project_type.ts";
+import ProjectCreateModel from "../../../../models/project/project_create_model.ts"
+import ProjectType from "../../../../models/project/project_type.ts"
 
 const createInitialValues: ProjectCreateModel = {
     name: '',

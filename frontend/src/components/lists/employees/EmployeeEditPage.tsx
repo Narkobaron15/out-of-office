@@ -2,12 +2,12 @@ import {useNavigate, useParams} from "react-router-dom"
 import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {initialValues, defaultPic} from "./validations/initial_values.ts"
+import {defaultPic} from "./validations/initial_values.ts"
 import {ErrorMessage, Field, Form, Formik} from "formik"
 import validationSchema from "./validations/schemas.ts"
 import EmployeeUpdateModel from "../../../models/employee/employee_update_model.ts"
-import {toast} from "react-toastify";
-import {errorToastOptions} from "../../common/toast_options.ts";
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
 
 export default function EmployeeEditPage() {
     const {id} = useParams()
@@ -16,13 +16,25 @@ export default function EmployeeEditPage() {
     const navigate = useNavigate()
 
     useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.data.position !== 'HR_MANAGER') {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+
         http_common.get(`employees/${id}`)
             .then(({data}) => {
                 setEmployee(new EmployeeUpdateModel(data))
                 setInitialImg(data.pictureUrl)
             })
             .catch(() => {
-                toast.error('Some error happened', errorToastOptions)
+                toast.error('Some error happened', toastOptions)
                 navigate(-1)
             })
     }, [])
@@ -57,7 +69,7 @@ export default function EmployeeEditPage() {
     return employee ? (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Update the employee {employee.fullName}</h1>
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+            <Formik initialValues={employee} validationSchema={validationSchema} onSubmit={onSubmit}>
                 {({isSubmitting, values, setFieldValue}) => (
                     <Form className="bg-white p-6 rounded-lg shadow-md">
                         <div className="mb-4">

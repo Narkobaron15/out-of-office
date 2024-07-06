@@ -18,7 +18,6 @@ export default function HomePage() {
                 by clicking the buttons below.
             </p>
             <div className="dashboard-pills">{
-                /* TODO: Show dashboards by role */
                 auth ? <>
                     <Button pill gradientDuoTone="purpleToBlue" href="/approval-requests">
                         Approval requests

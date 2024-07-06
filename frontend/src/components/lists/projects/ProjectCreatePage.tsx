@@ -1,14 +1,14 @@
-import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
-import createInitialValues from "./validations/initial_values.ts";
-import projectSchema from "./validations/schemas.ts";
-import {Button} from "flowbite-react";
-import {useEffect, useState} from "react";
-import EmployeeModel from "../../../models/employee/employee_model.ts";
-import http_common from "../../../common/http_common.ts";
-import {toastOptions} from "../../common/toast_options.ts";
-import {toast} from "react-toastify";
-import {useNavigate} from "react-router-dom";
-import ProjectCreateModel from "../../../models/project/project_create_model.ts";
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
+import createInitialValues from "./validations/initial_values.ts"
+import projectSchema from "./validations/schemas.ts"
+import {Button} from "flowbite-react"
+import {useEffect, useState} from "react"
+import EmployeeModel from "../../../models/employee/employee_model.ts"
+import http_common from "../../../common/http_common.ts"
+import {toastOptions} from "../../common/toast_options.ts"
+import {toast} from "react-toastify"
+import {useNavigate} from "react-router-dom"
+import ProjectCreateModel from "../../../models/project/project_create_model.ts"
 
 export default function ProjectCreatePage() {
     const [manager, setManager] = useState<EmployeeModel>()
@@ -27,7 +27,7 @@ export default function ProjectCreatePage() {
                 toast.error('Some error happened', toastOptions)
                 navigate('/')
             })
-    }, []);
+    }, [])
 
     const handleSubmit = (
         values: ProjectCreateModel,

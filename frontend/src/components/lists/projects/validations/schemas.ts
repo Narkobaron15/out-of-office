@@ -1,4 +1,4 @@
-import * as Yup from 'yup';
+import * as Yup from 'yup'
 
 const projectSchema = Yup.object().shape({
     name: Yup.string().required('Required'),
@@ -9,4 +9,4 @@ const projectSchema = Yup.object().shape({
     status: Yup.boolean().required('Required'),
 })
 
-export default projectSchema;
+export default projectSchema

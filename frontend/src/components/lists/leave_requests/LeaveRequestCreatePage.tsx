@@ -1,13 +1,14 @@
-import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik";
-import {createInitialValues} from "./validations/initial_values.ts";
-import LeaveRequestCreateModel from "../../../models/leave_request/leave_request_create_model.ts";
-import http_common from "../../../common/http_common.ts";
-import {useNavigate} from "react-router-dom";
-import {toast} from "react-toastify";
-import {toastOptions} from "../../common/toast_options.ts";
-import validationSchema from "./validations/schemas.ts";
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
+import {createInitialValues} from "./validations/initial_values.ts"
+import LeaveRequestCreateModel from "../../../models/leave_request/leave_request_create_model.ts"
+import http_common from "../../../common/http_common.ts"
+import {useNavigate} from "react-router-dom"
+import {toast} from "react-toastify"
+import {toastOptions} from "../../common/toast_options.ts"
+import validationSchema from "./validations/schemas.ts"
 import './css/leave_requests.css'
-import {Button} from "flowbite-react";
+import {Button} from "flowbite-react"
+import {useEffect} from "react";
 
 export default function LeaveRequestCreatePage() {
     const navigate = useNavigate()
@@ -27,6 +28,20 @@ export default function LeaveRequestCreatePage() {
             })
             .finally(() => setSubmitting(false))
     }
+
+    useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.status > 299) {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+    }, [])
 
     return (
         <div className="container mx-auto p-4">

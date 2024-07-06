@@ -1,7 +1,7 @@
 import {Outlet} from 'react-router-dom'
 import HeaderComponent from './HeaderComponent.tsx'
 import FooterComponent from './FooterComponent.tsx'
-import {ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify"
 
 export default function Layout() {
     return (

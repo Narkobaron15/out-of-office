@@ -1,5 +1,5 @@
-import Subdivision from "./subdivision.ts";
-import Position from "./position.ts";
+import Subdivision from "./subdivision.ts"
+import Position from "./position.ts"
 
 export default class EmployeeUpdateModel {
     id: string
