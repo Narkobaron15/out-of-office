@@ -2,8 +2,7 @@ import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import createInitialValues from "./validations/initial_values.ts"
 import projectSchema from "./validations/schemas.ts"
 import {Button} from "flowbite-react"
-import {useEffect, useState} from "react"
-import EmployeeModel from "../../../models/employee/employee_model.ts"
+import {useEffect} from "react"
 import http_common from "../../../common/http_common.ts"
 import {toastOptions} from "../../common/toast_options.ts"
 import {toast} from "react-toastify"
@@ -12,13 +11,11 @@ import ProjectCreateModel from "../../../models/project/project_create_model.ts"
 import './css/project.css'
 
 export default function ProjectCreatePage() {
-    const [manager, setManager] = useState<EmployeeModel>()
     const navigate = useNavigate()
 
     useEffect(() => {
         http_common.get('auth/check')
             .then(({data}) => {
-                setManager(new EmployeeModel(data))
                 if (data.position === 'EMPLOYEE') {
                     toast.error('You are not allowed to create projects', toastOptions)
                     navigate('/')
@@ -34,7 +31,7 @@ export default function ProjectCreatePage() {
         values: ProjectCreateModel,
         {setSubmitting}: FormikHelpers<ProjectCreateModel>
     ) => {
-        http_common.post('projects', {...values, managerId: manager!.id})
+        http_common.post('projects', {...values })
             .then(() => {
                 toast.success('Project created successfully', toastOptions)
                 navigate('/projects')

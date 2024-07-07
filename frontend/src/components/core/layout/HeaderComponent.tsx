@@ -2,6 +2,8 @@ import {Navbar} from 'flowbite-react'
 import {Link, useLocation, useNavigate} from 'react-router-dom'
 import './layout.css'
 import http_common from "../../../common/http_common.ts"
+import {toast} from "react-toastify";
+import {toastOptions} from "../../common/toast_options.ts";
 
 export default function HeaderComponent() {
     const path = useLocation().pathname
@@ -11,13 +13,14 @@ export default function HeaderComponent() {
     const handleLogout = async () => {
         try {
             await http_common.post('auth/logout')
-
-            localStorage.removeItem('auth')
-            http_common.defaults.headers.common.Authorization = ''
-
             navigate('/login')
         } catch (error) {
             console.error(error)
+            toast.error('Some error happened', toastOptions)
+        }
+        finally {
+            localStorage.removeItem('auth')
+            http_common.defaults.headers.common.Authorization = ''
         }
     }
 
@@ -39,9 +42,9 @@ export default function HeaderComponent() {
                     <Navbar.Link as={Link} to="/account" active={path === '/account'}>
                         Account
                     </Navbar.Link>
-                    <Navbar.Link href="#" onClick={handleLogout}>
+                    <button onClick={handleLogout}>
                         Logout
-                    </Navbar.Link>
+                    </button>
                 </> : <>
                     <Navbar.Link as={Link} to="/login" active={path === '/login'}>
                         Login

@@ -71,7 +71,7 @@ export default function ApprovalRequestsPage() {
                                 <td>{request.leaveRequest.id}</td>
                                 <td>{request.status}</td>
                                 <td>{request.shortName}</td>
-                                <td className='flex'>
+                                <td className='flex justify-center'>
                                     <Button pill gradientDuoTone="purpleToBlue" className="mr-2"
                                             onClick={() => handleApprove(request.id)}>
                                         Approve

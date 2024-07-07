@@ -21,8 +21,13 @@ export default class Project extends BaseModel {
   @column.date()
   declare end: DateTime
 
-  @belongsTo(() => Employee)
+  @belongsTo(() => Employee, {
+    foreignKey: 'managerId',
+  })
   declare manager: BelongsTo<typeof Employee>
+
+  @column()
+  declare managerId: nodeCrypto.UUID
 
   @column()
   declare comment?: string

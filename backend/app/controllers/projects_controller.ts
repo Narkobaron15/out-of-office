@@ -30,6 +30,8 @@ export default class ProjectsController {
         .whereHas('employees', (builder) => {
           builder.where('partner_id', user.id)
         })
+        .orWhere('manager_id', user.id)
+        .preload('manager')
         .orderBy(pg.column, pg.direction)
         .paginate(pg.page, pg.limit)
       return projects.toJSON()
@@ -53,11 +55,12 @@ export default class ProjectsController {
   /**
    * Handle form submission for the creation action
    */
-  async store({ bouncer, request }: HttpContext) {
+  async store({ auth, bouncer, request }: HttpContext) {
     await bouncer.with('ProjectPolicy').authorize('open')
+    const user = auth.getUserOrFail()
 
     const project = new Project()
-    project.fill(request.all())
+    project.fill({ ...request.all(), managerId: user.id })
     await project.save()
 
     return project

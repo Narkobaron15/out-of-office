@@ -74,12 +74,12 @@ export default function AccountPage() {
 
                 <section>
                     <h4>Account Activity</h4>
-                    <p>Created At: {account.createdAt.toLocaleDateString()}</p>
+                    <p>Created At: {new Date(account.createdAt).toLocaleDateString()}</p>
                     <p>
                         Updated At:&nbsp;
                         {
                             account.updatedAt
-                                ? account.updatedAt.toLocaleDateString()
+                                ? new Date(account.updatedAt).toLocaleDateString()
                                 : "Never"
                         }
                     </p>

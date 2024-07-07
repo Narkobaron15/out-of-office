@@ -12,8 +12,8 @@ export default class extends BaseSchema {
       table.string('email', 255).notNullable().unique()
       table.string('password', 500).notNullable()
       table.string('full_name', 180).notNullable()
-      table.enum('role', Object.keys(Position)).notNullable()
-      table.enum('subdivision', Object.keys(Subdivision)).notNullable()
+      table.enum('role', Object.values(Position)).notNullable()
+      table.enum('subdivision', Object.values(Subdivision)).notNullable()
       table.boolean('status').notNullable()
       table.integer('days_off').notNullable().checkPositive()
       table.string('picture_url').nullable()
@@ -26,11 +26,11 @@ export default class extends BaseSchema {
     this.schema.createTable('leave_requests', (table) => {
       table.uuid('id').primary().index()
       table.uuid('employee_id').references('id').inTable('employees').onDelete('CASCADE')
-      table.enum('absence_reason', Object.keys(AbsenceReason)).notNullable()
+      table.enum('absence_reason', Object.values(AbsenceReason)).notNullable()
       table.date('start').notNullable()
       table.date('end').notNullable()
       table.text('comment').notNullable()
-      table.enum('status', Object.keys(Status)).notNullable()
+      table.enum('status', Object.values(Status)).notNullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
@@ -40,7 +40,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().index()
       table.uuid('approver_id').references('id').inTable('employees').onDelete('CASCADE')
       table.uuid('leave_request_id').references('id').inTable('leave_requests').onDelete('CASCADE')
-      table.enum('status', Object.keys(Status)).notNullable()
+      table.enum('status', Object.values(Status)).notNullable()
 
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
@@ -49,7 +49,7 @@ export default class extends BaseSchema {
     this.schema.createTable('projects', (table) => {
       table.uuid('id').primary().index()
       table.string('name', 180).notNullable()
-      table.enum('type', Object.keys(ProjectType)).notNullable()
+      table.enum('type', Object.values(ProjectType)).notNullable()
       table.date('start').notNullable()
       table.date('end').notNullable()
       table.uuid('manager_id').references('id').inTable('employees').onDelete('CASCADE')

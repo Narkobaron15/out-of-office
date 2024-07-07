@@ -15,16 +15,19 @@ const pictureConfig = {
 }
 
 export default class EmployeesController {
-  private static async uploadAvatar(request: Request, employee: Employee, update = false) {
+  private static async uploadAvatar(
+    request: Request,
+    employee: Employee,
+    update = false
+  ) {
     const avatar = request.file('avatar', pictureConfig)
     if (!avatar && update) return
-    if (!avatar) {
+    else if (!avatar) {
       if (!employee.pictureUrl) {
         employee.pictureUrl = null
       }
       return { error: 'No file was uploaded' }
-    }
-    if (!avatar.isValid) {
+    } else if (!avatar.isValid) {
       if (!employee.pictureUrl) {
         employee.pictureUrl = null
       }

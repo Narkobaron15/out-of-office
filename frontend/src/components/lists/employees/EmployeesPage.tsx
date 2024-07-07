@@ -45,10 +45,20 @@ export default function EmployeesPage() {
                 <h1>Employees</h1>
                 <div className="overflow-x-auto">
                     <table>
+                        <colgroup>
+                            <col className='w-1/12'/>
+                            <col/>
+                            <col/>
+                            <col/>
+                            <col/>
+                            <col/>
+                            <col/>
+                            <col className='w-max'/>
+                            <col/>
+                        </colgroup>
                         <thead>
                         <tr className="bg-gray-200 text-left">
                             <th>Avatar</th>
-                            <th>ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
                             <th>Subdivision</th>
@@ -64,9 +74,8 @@ export default function EmployeesPage() {
                             <tr key={employee.id} className="border-t">
                                 <td>
                                     <img src={employee.pictureUrl || defaultPic}
-                                         alt="avatar" className="avatar"/>
+                                         alt="avatar" className="avatar rounded-full"/>
                                 </td>
-                                <td>{employee.id}</td>
                                 <td>
                                     <Link to={`/employees/${employee.id}`}>
                                         {employee.fullName}
@@ -79,12 +88,14 @@ export default function EmployeesPage() {
                                 <td>{employee.daysOff}</td>
                                 <td>
                                     {employee.projects.map((project) => (
-                                        <span key={project.id} className="block">
+                                        <a href={`/projects/${project.id}`}
+                                           key={project.id}
+                                           className="block text-blue-500">
                                               {project.name}
-                                            </span>
+                                        </a>
                                     ))}
                                 </td>
-                                <td className="flex">
+                                <td className="flex justify-center">
                                     <Button href={`/employees/${employee.id}/edit`} className="btn btn-primary mr-2">
                                         <FaEdit/>
                                     </Button>

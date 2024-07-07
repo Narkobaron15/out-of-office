@@ -21,7 +21,9 @@ export default function ProjectsPage() {
         }
 
         http_common.get('projects')
-            .then(({data}) => setProjects(data.data))
+            .then(({data}) => {
+                setProjects(data.data)
+            })
             .catch(({response}) => AuthHandler(response, navigate))
     }, [])
 
@@ -38,9 +40,8 @@ export default function ProjectsPage() {
         projects.length > 0 ? (
             <div className="container mx-auto p-4">
                 <h1 className="text-2xl mb-4">Project List</h1>
-                <Table className="table-auto w-full">
+                <Table className="table-auto w-full text-center">
                     <Table.Head>
-                    <Table.Row>
                         <Table.HeadCell>Name</Table.HeadCell>
                         <Table.HeadCell>Type</Table.HeadCell>
                         <Table.HeadCell>Start Date</Table.HeadCell>
@@ -49,37 +50,42 @@ export default function ProjectsPage() {
                         <Table.HeadCell>Status</Table.HeadCell>
                         <Table.HeadCell>Comments</Table.HeadCell>
                         <Table.HeadCell>Actions</Table.HeadCell>
-                    </Table.Row>
                     </Table.Head>
                     <Table.Body>
-                    {projects.map((project) => (
-                        <Table.Row key={project.id}>
-                            <Table.Cell>
-                                <Link className="text-blue-500" to={`/projects/${project.id}`}>
-                                    {project.name}
-                                </Link>
-                            </Table.Cell>
-                            <Table.Cell>{project.type}</Table.Cell>
-                            <Table.Cell>{project.start.toDateString()}</Table.Cell>
-                            <Table.Cell>{project.end.toDateString()}</Table.Cell>
-                            <Table.Cell>{project.manager.fullName}</Table.Cell>
-                            <Table.Cell>{project.status ? 'Active' : 'Inactive'}</Table.Cell>
-                            <Table.Cell>{project.comment}</Table.Cell>
-                            <Table.Cell>
-                                <Link to={`/projects/${project.id}/edit`}
-                                      className="btn btn-secondary ml-2">
-                                    <FaEdit/>
-                                </Link>
-                                <Button pill gradientDuoTone="redToOrange"
-                                        onClick={() => handleDelete(project.id)}>
-                                    <FaTrash/>
-                                </Button>
-                            </Table.Cell>
-                        </Table.Row>
-                    ))}
+                        {projects.map((project) => (
+                            <Table.Row key={project.id}>
+                                <Table.Cell>
+                                    <Link className="text-blue-500" to={`/projects/${project.id}`}>
+                                        {project.name}
+                                    </Link>
+                                </Table.Cell>
+                                <Table.Cell>{project.type[0] + project.type.substring(1).toLowerCase()}</Table.Cell>
+                                <Table.Cell>{new Date(project.start).toDateString()}</Table.Cell>
+                                <Table.Cell>{new Date(project.end).toDateString()}</Table.Cell>
+                                <Table.Cell>{project.manager?.fullName}</Table.Cell>
+                                <Table.Cell>{project.status ? 'Active' : 'Inactive'}</Table.Cell>
+                                <Table.Cell>{project.comment}</Table.Cell>
+                                <Table.Cell className="flex justify-center">
+                                    <Button pill href={`/projects/${project.id}/edit`}
+                                            gradientDuoTone="tealToLime"
+                                            className="btn btn-secondary ml-2">
+                                        <FaEdit/>
+                                    </Button>
+                                    <Button pill className="ml-2"
+                                            gradientDuoTone="pinkToOrange"
+                                            onClick={() => handleDelete(project.id)}>
+                                        <FaTrash/>
+                                    </Button>
+                                </Table.Cell>
+                            </Table.Row>
+                        ))}
                     </Table.Body>
                 </Table>
-                <Link to="/projects/create" className="btn btn-success mt-4">Create New Project</Link>
+                <div className="flex justify-center">
+                    <Button href="/projects/create" pill className="mt-5">
+                        Create New Project
+                    </Button>
+                </div>
             </div>
         ) : (
             <div className="m-8">

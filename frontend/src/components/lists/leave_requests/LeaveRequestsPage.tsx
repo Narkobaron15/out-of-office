@@ -67,7 +67,7 @@ export default function LeaveRequestsPage() {
                             <td>{new Date(request.start).toLocaleDateString()}</td>
                             <td>{new Date(request.end).toLocaleDateString()}</td>
                             <td>{request.status}</td>
-                            <td className="flex">
+                            <td className="flex justify-center">
                                 <Button href={`leave-requests/${request.id}/edit`}
                                       className="mr-2 text-green-600">
                                     <FaEdit/>
