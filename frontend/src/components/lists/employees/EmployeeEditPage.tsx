@@ -8,6 +8,7 @@ import validationSchema from "./validations/schemas.ts"
 import EmployeeUpdateModel from "../../../models/employee/employee_update_model.ts"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
+import AuthHandler from "../../common/auth_handler.ts";
 
 export default function EmployeeEditPage() {
     const {id} = useParams()
@@ -50,11 +51,14 @@ export default function EmployeeEditPage() {
         formData.append('position', values.position)
         formData.append('status', values.status.toString())
         formData.append('daysOff', values.daysOff.toString())
+        formData.append('password', values.password)
         if (values.avatar) {
             formData.append('avatar', values.avatar)
         }
         if (values.delete_avatar) {
             formData.append('delete_avatar', 'true')
+        } else {
+            formData.append('delete_avatar', 'false')
         }
 
         http_common.put(`employees/${id}`, formData, {
@@ -65,15 +69,7 @@ export default function EmployeeEditPage() {
             .then(() => {
                 navigate('/employees')
             })
-            .catch(({response}) => {
-                if (response.status === 401) {
-                    toast.error('You are not authorized to view this page', toastOptions)
-                    localStorage.removeItem('auth')
-                    navigate('/login')
-                }
-
-                toast.error('Some error happened', toastOptions)
-            })
+            .catch(({response}) => AuthHandler(response, navigate))
             .finally(() => setSubmitting(false))
     }
 
@@ -95,7 +91,10 @@ export default function EmployeeEditPage() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Password</label>
-                            <Field name="password" type="password" className="form-input mt-1 block w-full"/>
+                            <Field name="password"
+                                   type="password"
+                                   className="form-input mt-1 block w-full"
+                                   placeholder="Leave empty if no change is intended"/>
                             <ErrorMessage name="password" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">

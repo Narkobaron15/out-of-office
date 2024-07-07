@@ -8,6 +8,7 @@ import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
 import './css/leave_requests.css'
 import {FaEdit, FaTrash} from "react-icons/fa";
+import AuthHandler from "../../common/auth_handler.ts";
 
 export default function LeaveRequestsPage() {
     const [requests, setRequests] = useState<LeaveRequestModel[] | null>()
@@ -22,16 +23,7 @@ export default function LeaveRequestsPage() {
 
         http_common.get('leave-requests')
             .then(({data}) => setRequests(data.data))
-            .catch(({response}) => {
-                if (response.status === 401) {
-                    toast.error('You are not authorized to view this page', toastOptions)
-                    localStorage.removeItem('auth')
-                    navigate('/login')
-                }
-
-                toast.error('Some error happened', toastOptions)
-                navigate('/')
-            })
+            .catch(({response}) => AuthHandler(response, navigate))
     }, [])
 
     const handleDelete = (id: string) => {

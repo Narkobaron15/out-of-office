@@ -7,6 +7,7 @@ import {Button, Table} from "flowbite-react"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
 import {FaEdit, FaTrash} from "react-icons/fa";
+import AuthHandler from "../../common/auth_handler.ts";
 
 export default function ProjectsPage() {
     const [projects, setProjects] = useState<ProjectModel[] | null>()
@@ -21,16 +22,7 @@ export default function ProjectsPage() {
 
         http_common.get('projects')
             .then(({data}) => setProjects(data.data))
-            .catch(({response}) => {
-                if (response.status === 401) {
-                    toast.error('You are not authorized to view this page', toastOptions)
-                    localStorage.removeItem('auth')
-                    navigate('/login')
-                }
-
-                toast.error('Some error happened', toastOptions)
-                navigate('/')
-            })
+            .catch(({response}) => AuthHandler(response, navigate))
     }, [])
 
     const handleDelete = (id: string) => {
@@ -39,16 +31,7 @@ export default function ProjectsPage() {
                 toast.success('Project deleted successfully', toastOptions)
                 setProjects(projects?.filter((project) => project.id !== id))
             })
-            .catch((error) => {
-                if (error.response.status === 401) {
-                    toast.error('You are not authorized to view this page', toastOptions)
-                    localStorage.removeItem('auth')
-                    navigate('/login')
-                }
-
-                toast.error('Some error happened', toastOptions)
-                window.location.reload()
-            })
+            .catch(({response}) => AuthHandler(response, navigate))
     }
 
     return projects ? (

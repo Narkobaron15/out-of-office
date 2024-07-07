@@ -6,6 +6,7 @@ import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
+import AuthHandler from "../../common/auth_handler.ts";
 
 const handleApprove = (id: string) => {
     http_common.post(`approval-requests/approve?id=${id}`)
@@ -43,15 +44,7 @@ export default function ApprovalRequestsPage() {
 
         http_common.get('approval-requests')
             .then(({data}) => setRequests(data.data))
-            .catch(({response}) => {
-                if (response.status === 401) {
-                    toast.error('You are not authorized to view this page', toastOptions)
-                    localStorage.removeItem('auth')
-                    navigate('/login')
-                }
-                toast.error('Some error happened', toastOptions)
-                navigate('/')
-            })
+            .catch(({response}) => AuthHandler(response, navigate))
     }, [])
 
     return requests ? (

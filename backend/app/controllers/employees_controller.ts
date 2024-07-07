@@ -15,15 +15,9 @@ const pictureConfig = {
 }
 
 export default class EmployeesController {
-  private static async uploadAvatar(request: Request, employee: Employee) {
-    if (!request.file('avatar')) {
-      // set a default picture
-      employee.pictureUrl = null
-      return
-    }
-
+  private static async uploadAvatar(request: Request, employee: Employee, update = false) {
     const avatar = request.file('avatar', pictureConfig)
-
+    if (!avatar && update) return
     if (!avatar) {
       if (!employee.pictureUrl) {
         employee.pictureUrl = null
@@ -152,9 +146,9 @@ export default class EmployeesController {
       return response.badRequest('Cannot change the employee ID')
     }
 
-    await bouncer.with('EmployeePolicy').authorize('edit', await Employee.find(params.id))
-
     const employee = await Employee.findOrFail(params.id)
+    await bouncer.with('EmployeePolicy').authorize('edit', employee)
+
     employee.merge(
       {
         ...request.all(),
@@ -162,8 +156,9 @@ export default class EmployeesController {
       },
       true
     )
+
     await EmployeesController.deleteAvatar(request, employee)
-    await EmployeesController.uploadAvatar(request, employee)
+    await EmployeesController.uploadAvatar(request, employee, true)
     await employee.save()
 
     return employee

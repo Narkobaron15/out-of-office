@@ -27,5 +27,6 @@
 }
 
 .icon {
-    @apply absolute right-3 top-4 text-gray-500;
+    @apply absolute right-3 text-gray-500;
+    top: 40%;
 }
