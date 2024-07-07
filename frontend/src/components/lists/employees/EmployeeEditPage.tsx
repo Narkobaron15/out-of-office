@@ -142,10 +142,6 @@ export default function EmployeeEditPage() {
                                 JPG or GIF</p>
                             <ErrorMessage name="image" component="div" className="error-message"/>
                         </div>
-                        <div className="flex justify-end mb-4">
-                            <button type="button" className="cancel-btn" onClick={() => navigate(-1)}>Cancel</button>
-                            <button type="submit" className="create-btn" disabled={isSubmitting}>Update</button>
-                        </div>
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded"
                                 disabled={isSubmitting}>
                             Submit

@@ -9,6 +9,7 @@ import {toastOptions} from "../../common/toast_options.ts"
 import {toast} from "react-toastify"
 import {useNavigate} from "react-router-dom"
 import ProjectCreateModel from "../../../models/project/project_create_model.ts"
+import './css/project.css'
 
 export default function ProjectCreatePage() {
     const [manager, setManager] = useState<EmployeeModel>()
@@ -45,8 +46,8 @@ export default function ProjectCreatePage() {
     }
 
     return (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Create Project</h1>
+        <div className="project-container">
+            <h1>Create Project</h1>
             <Formik
                 initialValues={createInitialValues}
                 validationSchema={projectSchema}
@@ -86,12 +87,15 @@ export default function ProjectCreatePage() {
                             <Field as='textarea' name="comment" type="text"/>
                             <ErrorMessage name="comment" component="div"/>
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 flex justify-center">
                             <label htmlFor="status">Status</label>
                             <Field name="status" type="checkbox"/>
                             <ErrorMessage name="status" component="div"/>
                         </div>
-                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                        <Button type="submit" className="btn mt-4 inline-block bg-blue-500"
+                                disabled={isSubmitting}>
+                            Submit
+                        </Button>
                     </Form>
                 )}
             </Formik>

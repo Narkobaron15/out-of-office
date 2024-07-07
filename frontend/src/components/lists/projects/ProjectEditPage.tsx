@@ -8,6 +8,7 @@ import ProjectUpdateModel from "../../../models/project/project_update_model.ts"
 import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import projectSchema from "./validations/schemas.ts"
 import {Button} from "flowbite-react"
+import './css/project.css'
 
 export default function ProjectEditPage() {
     const {id} = useParams()
@@ -51,8 +52,8 @@ export default function ProjectEditPage() {
     }
 
     return project ? (
-        <div className="container mx-auto">
-            <h1 className="text-2xl font-bold mb-4">Update Project</h1>
+        <div className="project-container">
+            <h1>Update Project</h1>
             <Formik
                 initialValues={project}
                 validationSchema={projectSchema}
@@ -98,12 +99,15 @@ export default function ProjectEditPage() {
                             <Field as='textarea' name="comment" type="text"/>
                             <ErrorMessage name="comment" component="div"/>
                         </div>
-                        <div className="mb-4">
+                        <div className="mb-4 flex justify-center">
                             <label htmlFor="status">Status</label>
                             <Field name="status" type="checkbox"/>
                             <ErrorMessage name="status" component="div"/>
                         </div>
-                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                        <Button type="submit" className="btn mt-4 inline-block bg-blue-500"
+                                disabled={isSubmitting}>
+                            Submit
+                        </Button>
                     </Form>
                 )}
             </Formik>
