@@ -35,9 +35,7 @@ export default function ApprovalRequestCreatePage() {
                 console.error(e)
                 toast.error('Some error happened', toastOptions)
             })
-            .finally(() => {
-                setSubmitting(false)
-            })
+            .finally(() => setSubmitting(false))
     }
 
     useEffect(() => {

@@ -9,6 +9,11 @@ import sharp from 'sharp'
 
 sharp.cache(false)
 
+const pictureConfig = {
+  size: '5mb',
+  extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif'],
+}
+
 export default class EmployeesController {
   private static async uploadAvatar(request: Request, employee: Employee) {
     if (!request.file('avatar')) {
@@ -17,10 +22,7 @@ export default class EmployeesController {
       return
     }
 
-    const avatar = request.file('avatar', {
-      size: '5mb',
-      extnames: ['jpg', 'png', 'jpeg', 'svg', 'jfif', 'webp', 'avif'],
-    })
+    const avatar = request.file('avatar', pictureConfig)
 
     if (!avatar) {
       if (!employee.pictureUrl) {
@@ -45,7 +47,7 @@ export default class EmployeesController {
     await avatar.move('./tmp', { name: fileName })
     await sharp(`./tmp/${fileName}`)
       .resize(128, 128)
-      .jpeg({ quality: 90 })
+      .webp({ quality: 90 })
       .toFile(`./tmp/compressed/${fileName}`)
 
     const [file] = await bucket.upload(`./tmp/compressed/${fileName}`, {
@@ -55,21 +57,36 @@ export default class EmployeesController {
       },
     })
     // await file.makePublic()
-    employee.pictureUrl = file.publicUrl()
+    employee.pictureUrl = file.publicUrl().replace(/%2F/g, '/')
 
     // remove the temporary file from the filesystem
     await fs.promises.unlink(`./tmp/compressed/${fileName}`)
     await fs.promises.unlink(`./tmp/${fileName}`)
   }
 
-  private static async deleteAvatar(request: Request, employee: Employee, deleteAvatar = false) {
+  private static async deleteAvatar(
+    request: Request,
+    employee: Employee,
+    deleteAvatar = false
+  ) {
     if (!employee.pictureUrl) return
 
-    const shouldDelete =
-      deleteAvatar || request.all()['delete_avatar'] === 'true' || request.file('avatar')
+    const shouldDelete = (
+        deleteAvatar ||
+        request.all()['delete_avatar'] === 'true' ||
+        request.file('avatar')?.isValid
+    )
     if (!shouldDelete) return
 
-    const filename = 'avatars/' + employee.pictureUrl.split('/').pop()!
+    let filename = employee.pictureUrl.replace(/%2F/g, '/').split('/').pop()
+    if (!filename) {
+      employee.pictureUrl = undefined
+      return
+    }
+
+    if (!filename.startsWith('avatars/')) {
+      filename = `avatars/${filename}`
+    }
     await bucket.file(filename).delete()
     employee.pictureUrl = undefined
   }
@@ -131,8 +148,8 @@ export default class EmployeesController {
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
-    if (params.id !== request.all().id) {
-      return response.badRequest('Cannot change the project ID')
+    if (request.all().id && params.id !== request.all().id) {
+      return response.badRequest('Cannot change the employee ID')
     }
 
     await bouncer.with('EmployeePolicy').authorize('edit', await Employee.find(params.id))

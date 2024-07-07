@@ -3,7 +3,7 @@ import {useEffect, useState} from "react"
 import http_common from "../../../common/http_common.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {defaultPic} from "./validations/initial_values.ts"
-import {ErrorMessage, Field, Form, Formik} from "formik"
+import {ErrorMessage, Field, Form, Formik, FormikHelpers} from "formik"
 import validationSchema from "./validations/schemas.ts"
 import EmployeeUpdateModel from "../../../models/employee/employee_update_model.ts"
 import {toast} from "react-toastify"
@@ -39,7 +39,10 @@ export default function EmployeeEditPage() {
             })
     }, [])
 
-    const onSubmit = (values: EmployeeUpdateModel) => {
+    const onSubmit = (
+        values: EmployeeUpdateModel,
+        {setSubmitting}: FormikHelpers<EmployeeUpdateModel>
+    ) => {
         const formData = new FormData()
         formData.append('fullName', values.fullName)
         formData.append('email', values.email)
@@ -62,8 +65,16 @@ export default function EmployeeEditPage() {
             .then(() => {
                 navigate('/employees')
             })
-            .catch(() => {
+            .catch(({response}) => {
+                if (response.status === 401) {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    localStorage.removeItem('auth')
+                    navigate('/login')
+                }
+
+                toast.error('Some error happened', toastOptions)
             })
+            .finally(() => setSubmitting(false))
     }
 
     return employee ? (
@@ -103,7 +114,12 @@ export default function EmployeeEditPage() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Position</label>
-                            <Field name="position" className="form-input mt-1 block w-full"/>
+                            <Field name="position" as="select" className="form-input mt-1 block w-full">
+                                <option value="HR_MANAGER">HR Manager</option>
+                                <option value="PROJECT_MANAGER">Project Manager</option>
+                                <option value="EMPLOYEE">Employee</option>
+                                {/*<option value="OTHER">Other</option>*/}
+                            </Field>
                             <ErrorMessage name="position" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">

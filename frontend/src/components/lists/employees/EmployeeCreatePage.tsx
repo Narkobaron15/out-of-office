@@ -23,9 +23,7 @@ export default function EmployeeCreatePage() {
             .then(() => {
                 navigate('/employees')
             })
-            .catch(() => {
-                setSubmitting(false)
-            })
+            .catch(() => setSubmitting(false))
     }
 
     useEffect(() => {

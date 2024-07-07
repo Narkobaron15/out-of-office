@@ -48,8 +48,8 @@ export default class LeaveRequestsController {
    * Handle form submission for the edit action
    */
   async update({ bouncer, params, request, response }: HttpContext) {
-    if (params.id !== request.all().id) {
-      return response.badRequest('Cannot change the project ID')
+    if (request.all().id && params.id !== request.all().id) {
+      return response.badRequest('Cannot change the leave request ID')
     }
 
     await bouncer.with('LeaveRequestPolicy').authorize('update')
