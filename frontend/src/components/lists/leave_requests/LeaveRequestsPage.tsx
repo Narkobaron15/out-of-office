@@ -7,6 +7,7 @@ import {Button} from "flowbite-react"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
 import './css/leave_requests.css'
+import {FaEdit, FaTrash} from "react-icons/fa";
 
 export default function LeaveRequestsPage() {
     const [requests, setRequests] = useState<LeaveRequestModel[] | null>()
@@ -21,7 +22,13 @@ export default function LeaveRequestsPage() {
 
         http_common.get('leave-requests')
             .then(({data}) => setRequests(data.data))
-            .catch(() => {
+            .catch(({response}) => {
+                if (response.status === 401) {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    localStorage.removeItem('auth')
+                    navigate('/login')
+                }
+
                 toast.error('Some error happened', toastOptions)
                 navigate('/')
             })
@@ -68,18 +75,14 @@ export default function LeaveRequestsPage() {
                             <td>{new Date(request.start).toLocaleDateString()}</td>
                             <td>{new Date(request.end).toLocaleDateString()}</td>
                             <td>{request.status}</td>
-                            <td>
-                                <Button href={`/view/${request.id}`}
-                                      className="mr-2 text-blue-600">
-                                    View
-                                </Button>
+                            <td className="flex">
                                 <Button href={`leave-requests/${request.id}/edit`}
                                       className="mr-2 text-green-600">
-                                    Edit
+                                    <FaEdit/>
                                 </Button>
                                 <Button pill onClick={() => handleDelete(request.id)}
                                         className="text-red-600">
-                                    Delete
+                                    <FaTrash/>
                                 </Button>
                             </td>
                         </tr>
@@ -93,7 +96,7 @@ export default function LeaveRequestsPage() {
                 <h2 className="font-bold text-4xl mb-5" role="alert">
                     No leave requests found
                 </h2>
-                <Button href="/employees/create" className="btn btn-primary inline-flex">
+                <Button href="/leave-requests/create" className="btn btn-primary inline-flex">
                     Add a new leave request
                 </Button>
             </div>

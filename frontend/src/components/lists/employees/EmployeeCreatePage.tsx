@@ -62,7 +62,16 @@ export default function EmployeeCreatePage() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Subdivision</label>
-                            <Field name="subdivision" className="form-input mt-1 block w-full"/>
+                            <Field name="subdivision" as="select" className="form-input mt-1 block w-full">
+                                <option value="HR">HR</option>
+                                <option value="IT">IT</option>
+                                <option value="FINANCE">Finance</option>
+                                <option value="MARKETING">Marketing</option>
+                                <option value="SALES">Sales</option>
+                                <option value="SUPPORT">Support</option>
+                                <option value="RELATIONS">Relations</option>
+                                <option selected value="INDETERMINATE">Indeterminate</option>
+                            </Field>
                             <ErrorMessage name="subdivision" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">

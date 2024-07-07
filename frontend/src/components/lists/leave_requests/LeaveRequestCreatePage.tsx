@@ -88,7 +88,7 @@ export default function LeaveRequestCreatePage() {
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700">Comment</label>
-                        <Field name="comment" type="text" className="mt-1 block w-full"/>
+                        <Field as='textarea' name="comment" type="text" className="mt-1 block w-full"/>
                         <ErrorMessage name="comment" component="div" className="text-red-600"/>
                     </div>
                     <Button type="submit"

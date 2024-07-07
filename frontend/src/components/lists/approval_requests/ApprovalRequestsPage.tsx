@@ -43,7 +43,12 @@ export default function ApprovalRequestsPage() {
 
         http_common.get('approval-requests')
             .then(({data}) => setRequests(data.data))
-            .catch(() => {
+            .catch(({response}) => {
+                if (response.status === 401) {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    localStorage.removeItem('auth')
+                    navigate('/login')
+                }
                 toast.error('Some error happened', toastOptions)
                 navigate('/')
             })
@@ -73,8 +78,8 @@ export default function ApprovalRequestsPage() {
                                 <td>{request.leaveRequest.id}</td>
                                 <td>{request.status}</td>
                                 <td>{request.shortName}</td>
-                                <td>
-                                    <Button pill gradientDuoTone="purpleToBlue"
+                                <td className='flex'>
+                                    <Button pill gradientDuoTone="purpleToBlue" className="mr-2"
                                             onClick={() => handleApprove(request.id)}>
                                         Approve
                                     </Button>
@@ -98,7 +103,7 @@ export default function ApprovalRequestsPage() {
                 <h2 className="font-bold text-4xl mb-5" role="alert">
                     No approval requests found
                 </h2>
-                <Button href="/employees/create" className="btn btn-primary inline-flex">
+                <Button href="/approval-requests/create" className="btn btn-primary inline-flex">
                     Add a new approval request
                 </Button>
             </div>

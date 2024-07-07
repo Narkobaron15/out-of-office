@@ -83,7 +83,7 @@ export default function ProjectCreatePage() {
                         </div>
                         <div className="mb-4">
                             <label htmlFor="comment">Comment</label>
-                            <Field name="comment" type="text"/>
+                            <Field as='textarea' name="comment" type="text"/>
                             <ErrorMessage name="comment" component="div"/>
                         </div>
                         <div className="mb-4">

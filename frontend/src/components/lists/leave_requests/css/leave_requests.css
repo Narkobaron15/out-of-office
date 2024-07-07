@@ -15,7 +15,7 @@
 }
 
 .leave-requests th, .leave-requests td {
-    @apply py-2 px-4;
+    @apply py-2 px-4 text-center;
 }
 
 .view-page-link {

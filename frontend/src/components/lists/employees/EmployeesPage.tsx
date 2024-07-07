@@ -4,10 +4,11 @@ import http_common from "../../../common/http_common.ts"
 import {Link, useNavigate} from "react-router-dom"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
 import {Button} from "flowbite-react"
-import {FaEdit} from "react-icons/fa"
+import {FaEdit, FaTrash} from "react-icons/fa"
 import './css/employees.css'
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
+import {defaultPic} from "./validations/initial_values.ts";
 
 export default function EmployeesPage() {
     const [employees, setEmployees] = useState<EmployeeModel[] | null>()
@@ -22,7 +23,13 @@ export default function EmployeesPage() {
 
         http_common.get('employees')
             .then(({data}) => setEmployees(data.data))
-            .catch(() => {
+            .catch(({response}) => {
+                if (response.status === 401) {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    localStorage.removeItem('auth')
+                    navigate('/login')
+                }
+
                 toast.error('Some error happened', toastOptions)
                 navigate('/')
             })
@@ -48,6 +55,7 @@ export default function EmployeesPage() {
                     <table>
                         <thead>
                         <tr className="bg-gray-200 text-left">
+                            <th>Avatar</th>
                             <th>ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
@@ -62,6 +70,10 @@ export default function EmployeesPage() {
                         <tbody>
                         {employees.map((employee) => (
                             <tr key={employee.id} className="border-t">
+                                <td>
+                                    <img src={employee.pictureUrl || defaultPic}
+                                         alt="avatar" className="avatar"/>
+                                </td>
                                 <td>{employee.id}</td>
                                 <td>
                                     <Link to={`/employees/${employee.id}`}>
@@ -80,12 +92,12 @@ export default function EmployeesPage() {
                                             </span>
                                     ))}
                                 </td>
-                                <td>
-                                    <Button href={`/employees/${employee.id}/edit`} className="btn btn-primary">
+                                <td className="flex">
+                                    <Button href={`/employees/${employee.id}/edit`} className="btn btn-primary mr-2">
                                         <FaEdit/>
                                     </Button>
                                     <Button onClick={()=>handleDelete(employee.id)} className="btn btn-primary">
-                                        Delete
+                                        <FaTrash/>
                                     </Button>
                                 </td>
                             </tr>

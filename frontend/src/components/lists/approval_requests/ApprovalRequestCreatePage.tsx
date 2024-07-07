@@ -5,7 +5,7 @@ import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
-import checkAuth from "../check_auth.ts";
+import {useEffect} from "react";
 
 export default function ApprovalRequestCreatePage() {
     const initialValues = {
@@ -35,7 +35,19 @@ export default function ApprovalRequestCreatePage() {
             })
     }
 
-    checkAuth(navigate)
+    useEffect(() => {
+        http_common.get('auth/check')
+            .then(response => {
+                if (response.data.position === 'EMPLOYEE') {
+                    toast.error('You are not authorized to view this page', toastOptions)
+                    navigate(-1)
+                }
+            })
+            .catch(() => {
+                toast.error('You are not authorized to view this page', toastOptions)
+                navigate(-1)
+            })
+    }, [])
 
     // TODO: Add dropdowns for leaveRequestId and approverId
 
@@ -62,7 +74,7 @@ export default function ApprovalRequestCreatePage() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Comment</label>
-                            <Field name="comment" className="form-input mt-1 block w-full"/>
+                            <Field as='textarea' name="comment" className="form-input mt-1 block w-full"/>
                             <ErrorMessage name="comment" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded"
