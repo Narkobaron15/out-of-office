@@ -5,7 +5,9 @@ import http_common from "../../../common/http_common.ts"
 import {useNavigate} from "react-router-dom"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import LeaveRequestModel from "../../../models/leave_request/leave_request_model.ts";
+import EmployeeModel from "../../../models/employee/employee_model.ts";
 
 export default function ApprovalRequestCreatePage() {
     const initialValues = {
@@ -15,6 +17,9 @@ export default function ApprovalRequestCreatePage() {
         comment: ''
     }
     const navigate = useNavigate()
+
+    const [leaveRequests, setLeaveRequests] = useState<LeaveRequestModel[]>([])
+    const [approvers, setApprovers] = useState<EmployeeModel[]>([])
 
     const handleSubmit = (
         values: ApprovalRequestCreateModel,
@@ -42,14 +47,28 @@ export default function ApprovalRequestCreatePage() {
                     toast.error('You are not authorized to view this page', toastOptions)
                     navigate(-1)
                 }
+
+                http_common.get('leave_requests')
+                    .then(({data}) => {
+                        setLeaveRequests(data)
+                    })
+                    .catch(() => {
+                        toast.error('Some error happened', toastOptions)
+                    })
+
+                http_common.get('employees')
+                    .then(({data}) => {
+                        setApprovers(data)
+                    })
+                    .catch(() => {
+                        toast.error('Some error happened', toastOptions)
+                    })
             })
             .catch(() => {
                 toast.error('You are not authorized to view this page', toastOptions)
                 navigate(-1)
             })
     }, [])
-
-    // TODO: Add dropdowns for leaveRequestId and approverId
 
     return (
         <div className="container mx-auto p-4">
@@ -59,12 +78,24 @@ export default function ApprovalRequestCreatePage() {
                     <Form className="bg-white p-6 rounded-lg shadow-md">
                         <div className="mb-4">
                             <label className="block text-gray-700">Leave Request ID</label>
-                            <Field name="leaveRequestId" className="form-input mt-1 block w-full"/>
+                            <Field name="leaveRequestId" as="select" className="form-input mt-1 block w-full">
+                                {leaveRequests.map(leaveRequest => (
+                                    <option key={leaveRequest.id} value={leaveRequest.id}>
+                                        {leaveRequest.shortName}
+                                    </option>
+                                ))}
+                            </Field>
                             <ErrorMessage name="leaveRequestId" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Approver ID</label>
-                            <Field name="approverId" className="form-input mt-1 block w-full"/>
+                            <Field name="approverId" as="select" className="form-input mt-1 block w-full">
+                                {approvers.map(approver => (
+                                    <option key={approver.id} value={approver.id}>
+                                        {approver.fullName}
+                                    </option>
+                                ))}
+                            </Field>
                             <ErrorMessage name="approverId" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">
