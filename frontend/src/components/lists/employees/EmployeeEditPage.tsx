@@ -83,6 +83,11 @@ export default function EmployeeEditPage() {
                             <ErrorMessage name="email" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <div className="mb-4">
+                            <label className="block text-gray-700">Password</label>
+                            <Field name="password" type="password" className="form-input mt-1 block w-full"/>
+                            <ErrorMessage name="password" component="div" className="text-red-500 text-sm"/>
+                        </div>
+                        <div className="mb-4">
                             <label className="block text-gray-700">Subdivision</label>
                             <Field name="subdivision" as="select" className="form-input mt-1 block w-full">
                                 <option value="HR">HR</option>

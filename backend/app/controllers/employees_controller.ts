@@ -66,9 +66,7 @@ export default class EmployeesController {
     if (!employee.pictureUrl) return
 
     const shouldDelete =
-      deleteAvatar ||
-      request.all()['delete_avatar'] === 'true' ||
-      request.file('avatar')
+      deleteAvatar || request.all()['delete_avatar'] === 'true' || request.file('avatar')
     if (!shouldDelete) return
 
     const filename = 'avatars/' + employee.pictureUrl.split('/').pop()!
@@ -115,7 +113,14 @@ export default class EmployeesController {
 
     const user = await auth.authenticate()
     const employee = new Employee()
-    employee.fill({ ...request.all(), partnerId: user.id })
+    employee.fill(
+      {
+        ...request.all(),
+        partnerId: user.id,
+        role: request.all().position || 'EMPLOYEE',
+      },
+      true
+    )
     await EmployeesController.uploadAvatar(request, employee)
     await employee.save()
 
@@ -133,7 +138,13 @@ export default class EmployeesController {
     await bouncer.with('EmployeePolicy').authorize('edit', await Employee.find(params.id))
 
     const employee = await Employee.findOrFail(params.id)
-    employee.merge(request.all())
+    employee.merge(
+      {
+        ...request.all(),
+        role: request.all().position || 'EMPLOYEE',
+      },
+      true
+    )
     await EmployeesController.deleteAvatar(request, employee)
     await EmployeesController.uploadAvatar(request, employee)
     await employee.save()
