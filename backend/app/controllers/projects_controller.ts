@@ -1,7 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Project from '#models/project'
 import Employee from '#models/employee'
-import Position from '#types/position'
 import Pagination from '#types/pagination'
 
 export default class ProjectsController {
@@ -125,34 +124,32 @@ export default class ProjectsController {
   /**
    * Assign a project to an employee
    */
-  async assign({ bouncer, request, response }: HttpContext) {
-    let project: Project | null
-    try {
-      project = await Project.findOrFail(request.all().project_id)
-    } catch (error) {
-      return response.notFound('Project not found')
+  async assign(ctx: HttpContext) {
+    const response = await this.assignUnassignCore(ctx)
+    if (!response) {
+      return response
     }
 
-    await bouncer.with('ProjectPolicy').authorize('assign', project)
-
-    let employee: Employee | null
-    try {
-      employee = await Employee.findOrFail(request.all().employee_id)
-    } catch (error) {
-      return response.notFound('Employee not found')
-    }
-    if (employee.role !== Position.EMPLOYEE) {
-      return response.badRequest('Only employees can be assigned to projects')
-    }
-
+    const { project, employee } = response
     await project.related('employees').attach([employee.id])
-    return response.noContent()
+    return ctx.response.noContent()
   }
 
   /**
    * Remove an employee from a project
    */
-  async unassign({ bouncer, request, response }: HttpContext) {
+  async unassign(ctx: HttpContext) {
+    const response = await this.assignUnassignCore(ctx)
+    if (!response) {
+      return response
+    }
+
+    const { project, employee } = response
+    await project.related('employees').detach([employee.id])
+    return ctx.response.noContent()
+  }
+
+  private async assignUnassignCore({ bouncer, request, response }: HttpContext) {
     let project: Project | null
     try {
       project = await Project.findOrFail(request.all().project_id)
@@ -169,7 +166,6 @@ export default class ProjectsController {
       return response.notFound('Employee not found')
     }
 
-    await project.related('employees').detach([employee.id])
-    return response.noContent()
+    return { project, employee }
   }
 }
