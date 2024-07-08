@@ -1,5 +1,24 @@
 # cloudbuild.yaml
 steps:
+  # Frontend build and deploy
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA', './frontend']
+    id: 'Build frontend image'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA']
+    id: 'Push frontend image'
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud app deploy frontend/app.yaml --image-url=gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA
+    id: 'Deploy frontend to App Engine'
+    env:
+      - '_VITE_BASE_URL=${_VITE_BASE_URL}'
+
   # Backend build and deploy
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA', './backend']
@@ -26,25 +45,6 @@ steps:
       - '_BUCKET_NAME=${_BUCKET_NAME}'
       - '_GCLOUD_PROJECT_ID=${PROJECT_ID}'
       - '_GCLOUD_TOKEN=${_GCLOUD_TOKEN}'
-
-  # Frontend build and deploy
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA', './frontend']
-    id: 'Build frontend image'
-
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA']
-    id: 'Push frontend image'
-
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud app deploy frontend/app.yaml --image-url=gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA
-    id: 'Deploy frontend to App Engine'
-    env:
-      - '_VITE_BASE_URL=${_VITE_BASE_URL}'
 
 # You can add more steps here for testing, linting, etc.
 
