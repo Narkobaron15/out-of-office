@@ -18,6 +18,7 @@ export default class SessionController {
 
   async logout({ auth, response }: HttpContext) {
     await auth.use('web').logout()
+    response.clearCookie('adonis-session')
     return response.noContent()
   }
 

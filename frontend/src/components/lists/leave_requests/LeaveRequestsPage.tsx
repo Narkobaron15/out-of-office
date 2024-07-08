@@ -81,7 +81,10 @@ export default function LeaveRequestsPage() {
                     ))}
                     </tbody>
                 </table>
-                <Link to="/create" className="mt-4 inline-block text-white bg-blue-500 px-4 py-2 rounded">Create New Request</Link>
+                <Link to="/leave-requests/create"
+                      className="mt-4 inline-block text-white bg-blue-500 px-4 py-2 rounded">
+                    Create New Request
+                </Link>
             </div>
         ) : (
             <div className="m-8">
