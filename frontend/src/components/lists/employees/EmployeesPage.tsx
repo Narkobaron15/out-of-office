@@ -3,7 +3,7 @@ import EmployeeModel from "../../../models/employee/employee_model.ts"
 import http_common from "../../../common/http_common.ts"
 import {Link, useNavigate} from "react-router-dom"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {Button} from "flowbite-react"
+import {Badge, Button} from "flowbite-react"
 import {FaEdit, FaTrash} from "react-icons/fa"
 import './css/employees.css'
 import {toast} from "react-toastify"
@@ -84,7 +84,11 @@ export default function EmployeesPage() {
                                 <td>{employee.email}</td>
                                 <td>{employee.subdivision}</td>
                                 <td>{employee.position}</td>
-                                <td>{employee.status ? 'Active' : 'Inactive'}</td>
+                                <td>
+                                    <Badge className="ml-3 mt-1" color={employee.status ? "green" : "red"}>
+                                        {employee.status ? "Active" : "Inactive"}
+                                    </Badge>
+                                </td>
                                 <td>{employee.daysOff}</td>
                                 <td>
                                     {employee.projects.map((project) => (

@@ -3,7 +3,7 @@ import http_common from "../../../common/http_common.ts"
 import {Link, useNavigate} from "react-router-dom"
 import ProjectModel from "../../../models/project/project_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {Button, Table} from "flowbite-react"
+import {Badge, Button, Table} from "flowbite-react"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
 import {FaEdit, FaTrash} from "react-icons/fa";
@@ -63,7 +63,11 @@ export default function ProjectsPage() {
                                 <Table.Cell>{new Date(project.start).toDateString()}</Table.Cell>
                                 <Table.Cell>{new Date(project.end).toDateString()}</Table.Cell>
                                 <Table.Cell>{project.manager?.fullName}</Table.Cell>
-                                <Table.Cell>{project.status ? 'Active' : 'Inactive'}</Table.Cell>
+                                <Table.Cell>
+                                    <Badge className="ml-3 mt-1" color={project.status ? "green" : "red"}>
+                                        {project.status ? "Active" : "Inactive"}
+                                    </Badge>
+                                </Table.Cell>
                                 <Table.Cell>{project.comment}</Table.Cell>
                                 <Table.Cell className="flex justify-center">
                                     <Button pill href={`/projects/${project.id}/edit`}
