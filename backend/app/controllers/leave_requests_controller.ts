@@ -40,10 +40,7 @@ export default class LeaveRequestsController {
    */
   async show({ params, response }: HttpContext) {
     try {
-      return await LeaveRequest.query()
-        .where('id', params.id)
-        .preload('employee')
-        .firstOrFail()
+      return await LeaveRequest.query().where('id', params.id).preload('employee').firstOrFail()
     } catch (error) {
       return response.notFound()
     }

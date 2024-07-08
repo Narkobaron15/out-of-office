@@ -15,11 +15,7 @@ const pictureConfig = {
 }
 
 export default class EmployeesController {
-  private static async uploadAvatar(
-    request: Request,
-    employee: Employee,
-    update = false
-  ) {
+  private static async uploadAvatar(request: Request, employee: Employee, update = false) {
     const avatar = request.file('avatar', pictureConfig)
     if (!avatar && update) return
     else if (!avatar) {
@@ -61,18 +57,11 @@ export default class EmployeesController {
     await fs.promises.unlink(`./tmp/${fileName}`)
   }
 
-  private static async deleteAvatar(
-    request: Request,
-    employee: Employee,
-    deleteAvatar = false
-  ) {
+  private static async deleteAvatar(request: Request, employee: Employee, deleteAvatar = false) {
     if (!employee.pictureUrl) return
 
-    const shouldDelete = (
-        deleteAvatar ||
-        request.all()['delete_avatar'] === 'true' ||
-        request.file('avatar')?.isValid
-    )
+    const shouldDelete =
+      deleteAvatar || request.all()['delete_avatar'] === 'true' || request.file('avatar')?.isValid
     if (!shouldDelete) return
 
     let filename = employee.pictureUrl.replace(/%2F/g, '/').split('/').pop()
