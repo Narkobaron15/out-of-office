@@ -24,8 +24,6 @@
 **/*.sln
 **/*.sw?
 
-**/bun.lockb
-
 # flyctl launch added from .idea/.gitignore
 # Default ignored files
 .idea/shelf
