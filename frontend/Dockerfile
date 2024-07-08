@@ -17,7 +17,7 @@ COPY . .
 # Build the application
 RUN npm run build
 
-ENV VITE_API_URL=$_VITE_API_URL
+ENV VITE_API_URL=$VITE_API_URL
 ENV NODE_ENV=production
 
 EXPOSE 8080
