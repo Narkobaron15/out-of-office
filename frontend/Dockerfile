@@ -17,9 +17,10 @@ COPY . .
 # Build the application
 RUN npm run build
 
+ENV VITE_API_URL=$_VITE_API_URL
 ENV NODE_ENV=production
 
-EXPOSE 8080
+EXPOSE 80
 
 # Command to start the Vite preview
 CMD ["npm", "run", "preview"]
