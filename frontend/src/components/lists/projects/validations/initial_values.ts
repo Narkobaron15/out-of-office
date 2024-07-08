@@ -6,7 +6,6 @@ const createInitialValues: ProjectCreateModel = {
     type: ProjectType.Other,
     start: new Date(),
     end: new Date(),
-    managerId: '',
     comment: '',
     status: false,
 }
