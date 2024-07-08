@@ -3,13 +3,14 @@ import http_common from "../../../common/http_common.ts"
 import {Link, useNavigate} from "react-router-dom"
 import ApprovalRequestModel from "../../../models/approval_request/approval_request_model.ts"
 import DefaultSpinner from "../../common/DefaultSpinner.tsx"
-import {Button} from "flowbite-react"
+import {Button, Table} from "flowbite-react"
 import {toast} from "react-toastify"
 import {toastOptions} from "../../common/toast_options.ts"
 import AuthHandler from "../../common/auth_handler.ts";
+import './css/approval_requests.css'
 
 const handleApprove = (id: string) => {
-    http_common.post(`approval-requests/approve?id=${id}`)
+    http_common.post(`approval-requests/approve/${id}`)
         .then(() => {
             window.location.reload()
         })
@@ -20,7 +21,7 @@ const handleApprove = (id: string) => {
 }
 
 const handleReject = (id: string) => {
-    http_common.post(`approval-requests/reject?id=${id}`)
+    http_common.post(`approval-requests/reject/${id}`)
         .then(() => {
             window.location.reload()
         })
@@ -52,39 +53,40 @@ export default function ApprovalRequestsPage() {
             <div className="approvals-container">
                 <h1>Approval Requests</h1>
                 <div className="overflow-x-auto">
-                    <table>
-                        <thead>
-                        <tr className="bg-gray-200 text-left">
-                            <th>ID</th>
-                            <th>Approver</th>
-                            <th>Leave Request</th>
-                            <th>Status</th>
-                            <th>Short Name</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {requests.map((request) => (
-                            <tr key={request.id} className="border-t">
-                                <td>{request.id}</td>
-                                <td>{request.approver.fullName}</td>
-                                <td>{request.leaveRequest.id}</td>
-                                <td>{request.status}</td>
-                                <td>{request.shortName}</td>
-                                <td className='flex justify-center'>
-                                    <Button pill gradientDuoTone="purpleToBlue" className="mr-2"
-                                            onClick={() => handleApprove(request.id)}>
-                                        Approve
-                                    </Button>
-                                    <Button pill gradientDuoTone="purpleToBlue"
-                                            onClick={() => handleReject(request.id)}>
-                                        Reject
-                                    </Button>
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                    <Table>
+                        <Table.Head>
+                            <Table.HeadCell>ID</Table.HeadCell>
+                            <Table.HeadCell>Approver</Table.HeadCell>
+                            <Table.HeadCell>Leave Request</Table.HeadCell>
+                            <Table.HeadCell>Status</Table.HeadCell>
+                            <Table.HeadCell>Short Name</Table.HeadCell>
+                            <Table.HeadCell>Actions</Table.HeadCell>
+                        </Table.Head>
+                        <Table.Body>
+                            {requests.map((request) => (
+                                <Table.Row key={request.id} className="border-t">
+                                    <Table.Cell>{request.id}</Table.Cell>
+                                    <Table.Cell>{request.approver.fullName}</Table.Cell>
+                                    <Table.Cell>{request.leaveRequest.id}</Table.Cell>
+                                    <Table.Cell>{request.status}</Table.Cell>
+                                    <Table.Cell>{request.shortName}</Table.Cell>
+                                    <Table.Cell className="flex justify-center">{
+                                        request.status !== 'APPROVED' && request.status !== 'REJECTED'
+                                            ? <>
+                                                <Button pill gradientDuoTone="purpleToBlue" className="mr-2"
+                                                        onClick={() => handleApprove(request.id)}>
+                                                    Approve
+                                                </Button>
+                                                <Button pill gradientDuoTone="purpleToBlue"
+                                                        onClick={() => handleReject(request.id)}>
+                                                    Reject
+                                                </Button>
+                                            </> : <></>
+                                    }</Table.Cell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
                 </div>
                 <Link to="/approval-requests/create"
                       className="bg-blue-500 text-white py-2 px-4 rounded mt-4 inline-block">

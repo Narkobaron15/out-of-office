@@ -7,7 +7,7 @@
 | them when creating a new bouncer instance.
 |
 | Pre-registered policies and abilities can be referenced as a string by their
-| name. Also, they are must if you want to perform authorization inside Edge
+| name. Also, they are a must if you want to perform authorization inside Edge
 | templates.
 |
 */

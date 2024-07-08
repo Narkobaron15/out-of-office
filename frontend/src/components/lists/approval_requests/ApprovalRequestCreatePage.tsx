@@ -8,28 +8,27 @@ import {toastOptions} from "../../common/toast_options.ts"
 import {useEffect, useState} from "react";
 import LeaveRequestModel from "../../../models/leave_request/leave_request_model.ts";
 import EmployeeModel from "../../../models/employee/employee_model.ts";
+import DefaultSpinner from "../../common/DefaultSpinner.tsx";
 
 export default function ApprovalRequestCreatePage() {
     const initialValues = {
         leaveRequestId: '',
         approverId: '',
         shortName: '',
-        comment: ''
+        comment: '',
     }
     const navigate = useNavigate()
 
-    const [leaveRequests, setLeaveRequests] = useState<LeaveRequestModel[]>([])
-    const [approvers, setApprovers] = useState<EmployeeModel[]>([])
+    const [leaveRequests, setLeaveRequests] = useState<LeaveRequestModel[]>()
+    const [approvers, setApprovers] = useState<EmployeeModel[]>()
 
     const handleSubmit = (
         values: ApprovalRequestCreateModel,
-        {setSubmitting}: FormikHelpers<ApprovalRequestCreateModel>
+        {setSubmitting}: FormikHelpers<ApprovalRequestCreateModel>,
     ) => {
-        http_common.post('/approval_requests', values)
-            .then(response => {
-                if (response.status === 201) {
-                    navigate('/approval-requests')
-                }
+        http_common.post('/approval-requests', values)
+            .then(() => {
+                navigate('/approval-requests')
             })
             .catch(e => {
                 console.error(e)
@@ -46,17 +45,17 @@ export default function ApprovalRequestCreatePage() {
                     navigate(-1)
                 }
 
-                http_common.get('leave_requests')
+                http_common.get('leave-requests')
                     .then(({data}) => {
-                        setLeaveRequests(data)
+                        setLeaveRequests(data.data)
                     })
                     .catch(() => {
                         toast.error('Some error happened', toastOptions)
                     })
 
-                http_common.get('employees')
+                http_common.get('employees/approvers')
                     .then(({data}) => {
-                        setApprovers(data)
+                        setApprovers(data.data)
                     })
                     .catch(() => {
                         toast.error('Some error happened', toastOptions)
@@ -68,10 +67,24 @@ export default function ApprovalRequestCreatePage() {
             })
     }, [])
 
+    if (!leaveRequests || !approvers)
+        return <DefaultSpinner/>
+    else if (leaveRequests.length === 0 || approvers.length === 0) {
+        toast.error('No leave requests or approvers found', toastOptions)
+        navigate(-1)
+        return
+    }
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Create Approval Request</h1>
-            <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+            <Formik initialValues={{
+                ...initialValues,
+                leaveRequestId: leaveRequests[0].id,
+                approverId: approvers[0].id,
+            }}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}>
                 {({isSubmitting}) => (
                     <Form className="bg-white p-6 rounded-lg shadow-md">
                         <div className="mb-4">
@@ -103,7 +116,7 @@ export default function ApprovalRequestCreatePage() {
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700">Comment</label>
-                            <Field as='textarea' name="comment" className="form-input mt-1 block w-full"/>
+                            <Field as="textarea" name="comment" className="form-input mt-1 block w-full"/>
                             <ErrorMessage name="comment" component="div" className="text-red-500 text-sm"/>
                         </div>
                         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded"

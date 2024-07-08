@@ -107,6 +107,22 @@ export default class EmployeesController {
     return employees.toJSON()
   }
 
+  async approvers({ bouncer, request }: HttpContext) {
+    await bouncer.with('EmployeePolicy').authorize('view')
+
+    // paginated results
+    const { page, limit, order } = request.qs()
+    const pg = new Pagination({ page, limit, order })
+    const employees = await Employee.query()
+      .where('role', 'PROJECT_MANAGER')
+      .orWhere('role', 'HR_MANAGER')
+      .orderBy(pg.column, pg.direction)
+      .preload('projects')
+      .paginate(pg.page, pg.limit)
+
+    return employees.toJSON()
+  }
+
   /**
    * Show individual record
    */

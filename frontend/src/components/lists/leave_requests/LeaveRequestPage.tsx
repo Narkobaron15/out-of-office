@@ -28,15 +28,15 @@ export default function LeaveRequestPage() {
                 <p><strong>Short Name:</strong> {request.shortName}</p>
                 <p><strong>Employee:</strong> {request.employee.fullName}</p>
                 <p><strong>Absence Reason:</strong> {request.absenceReason}</p>
-                <p><strong>Start:</strong> {request.start.toLocaleDateString()}</p>
-                <p><strong>End:</strong> {request.end.toLocaleDateString()}</p>
+                <p><strong>Start:</strong> {new Date(request.start).toLocaleDateString()}</p>
+                <p><strong>End:</strong> {new Date(request.end).toLocaleDateString()}</p>
                 <p><strong>Status:</strong> {request.status}</p>
                 <p><strong>Comment:</strong> {request.comment}</p>
             </div>
             <Link to={`/leave-requests/${request.id}/edit`} className="view-page-link">
                 Edit
             </Link>
-            <Link to="/leave-requests" className="view-page-link">
+            <Link to="/leave-requests" className="view-page-link ml-2">
                 Back to List
             </Link>
         </div>

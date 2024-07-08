@@ -20,11 +20,16 @@ export default class LeaveRequestsController {
   /**
    * Handle form submission for the creation action
    */
-  async store({ bouncer, request }: HttpContext) {
+  async store({ auth, bouncer, request }: HttpContext) {
     await bouncer.with('LeaveRequestPolicy').authorize('open')
+    const user = auth.getUserOrFail()
 
     const leaveRequest = new LeaveRequest()
-    leaveRequest.fill(request.all())
+    leaveRequest.fill({
+      ...request.all(),
+      status: Status.NEW,
+      employeeId: user.id,
+    })
     await leaveRequest.save()
 
     return leaveRequest

@@ -58,7 +58,7 @@ export default function LeaveRequestsPage() {
                     {requests.map((request) => (
                         <tr key={request.id}>
                             <td>
-                                <Link to={`leave-requests/${request.id}`} className="text-blue-600">
+                                <Link to={`/leave-requests/${request.id}`} className="text-blue-600">
                                     {request.shortName}
                                 </Link>
                             </td>
@@ -69,11 +69,11 @@ export default function LeaveRequestsPage() {
                             <td>{request.status}</td>
                             <td className="flex justify-center">
                                 <Button href={`leave-requests/${request.id}/edit`}
-                                      className="mr-2 text-green-600">
+                                      className="mr-2 bg-blue-400">
                                     <FaEdit/>
                                 </Button>
                                 <Button pill onClick={() => handleDelete(request.id)}
-                                        className="text-red-600">
+                                        className="bg-blue-400">
                                     <FaTrash/>
                                 </Button>
                             </td>

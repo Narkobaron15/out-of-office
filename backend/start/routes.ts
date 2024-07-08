@@ -34,11 +34,12 @@ router
       .group(() => {
         router.get('check', [SessionController, 'check']).prefix('auth')
 
+        router.get('employees/approvers', [EmployeesController, 'approvers'])
         router.resource('employees', EmployeesController).apiOnly()
 
-        router.resource('projects', ProjectsController).apiOnly()
         router.post('projects/assign', [ProjectsController, 'assign'])
         router.post('projects/unassign', [ProjectsController, 'unassign'])
+        router.resource('projects', ProjectsController).apiOnly()
 
         router.resource('leave-requests', LeaveRequestsController).apiOnly()
 
@@ -47,8 +48,8 @@ router
             router.get('', [ApprovalRequestsController, 'index'])
             router.get(':id', [ApprovalRequestsController, 'show'])
             router.post('', [ApprovalRequestsController, 'store'])
-            router.post('approve', [ApprovalRequestsController, 'approve'])
-            router.post('reject', [ApprovalRequestsController, 'reject'])
+            router.post('approve/:id', [ApprovalRequestsController, 'approve'])
+            router.post('reject/:id', [ApprovalRequestsController, 'reject'])
           })
           .prefix('approval-requests')
       })

@@ -15,9 +15,9 @@ export default class ApprovalRequestsController {
     const pg = new Pagination({ page, limit, order })
     const requests = await ApprovalRequest.query()
       .where('approver_id', user.id)
-      .orderBy(pg.column, pg.direction)
       .preload('leaveRequest')
       .preload('approver')
+      .orderBy(pg.column, pg.direction)
       .paginate(pg.page, pg.limit)
 
     return requests.toJSON()
