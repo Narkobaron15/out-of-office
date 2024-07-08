@@ -1,13 +1,5 @@
 # cloudbuild.yaml
 steps:
-  # Build environment setup
-  - name: node:latest
-    entrypoint: npm
-    args: ["run", "create-env"]
-    env:
-      - 'MY_SECRET_KEY=${_MY_SECRET_KEY}'
-      - 'MY_SECOND_SECRET_KEY=${_MY_SECOND_SECRET_KEY}'
-
   # Backend build and deploy
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/backend:$COMMIT_SHA', './backend']
@@ -47,3 +39,6 @@ steps:
 # You can add more steps here for testing, linting, etc.
 
 timeout: '1600s'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
