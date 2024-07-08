@@ -14,9 +14,18 @@ steps:
     args:
       - '-c'
       - |
-        gcloud app deploy backend/app.yaml --image-url=gcr.io/$PROJECT_ID/backend:$COMMIT_SHA \
-        --set-env-vars _GCLOUD_PROJECT_ID=${PROJECT_ID},_APP_KEY=${_APP_KEY},_DB_HOST=${_DB_HOST},_DB_PORT=5432,_DB_USER=${_DB_USER},_DB_PASSWORD=${_DB_PASSWORD},_DB_DATABASE=${_DB_DATABASE},_BUCKET_NAME=${_BUCKET_NAME},_GCLOUD_TOKEN=${_GCLOUD_TOKEN}
+        gcloud app deploy backend/app.yaml --image-url=gcr.io/$PROJECT_ID/backend:$COMMIT_SHA
     id: 'Deploy backend to App Engine'
+    env:
+      - '_APP_KEY=${_APP_KEY}'
+      - '_DB_HOST=${_DB_HOST}'
+      - '_DB_PORT=5432'
+      - '_DB_USER=${_DB_USER}'
+      - '_DB_PASSWORD=${_DB_PASSWORD}'
+      - '_DB_DATABASE=${_DB_DATABASE}'
+      - '_BUCKET_NAME=${_BUCKET_NAME}'
+      - '_GCLOUD_PROJECT_ID=${PROJECT_ID}'
+      - '_GCLOUD_TOKEN=${_GCLOUD_TOKEN}'
 
   # Frontend build and deploy
   - name: 'gcr.io/cloud-builders/docker'
@@ -32,9 +41,10 @@ steps:
     args:
       - '-c'
       - |
-        gcloud app deploy frontend/app.yaml --image-url=gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA \
-        --set-env-vars _VITE_API_URL=${_VITE_API_URL}
+        gcloud app deploy frontend/app.yaml --image-url=gcr.io/$PROJECT_ID/frontend:$COMMIT_SHA
     id: 'Deploy frontend to App Engine'
+    env:
+      - '_VITE_BASE_URL=${_VITE_BASE_URL}'
 
 # You can add more steps here for testing, linting, etc.
 
