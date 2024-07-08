@@ -1,22 +1,21 @@
-# Use the official Bun image as the base image
-FROM oven/bun:latest
+# Use the official node image as the base image
+FROM node:latest
 
 # Set the working directory
 WORKDIR /app
 
-# Copy the package.json and package-lock.json or yarn.lock files
+# Copy the package.json and package-lock.json files
 COPY package.json ./
 COPY package-lock.json ./
-COPY bun.lockb ./
 
 # Install dependencies
-RUN bun install
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
 # Build the application
-RUN bun vite build
+RUN npm run build
 
 ENV VITE_API_URL=$_VITE_API_URL
 ENV NODE_ENV=production
@@ -24,4 +23,4 @@ ENV NODE_ENV=production
 EXPOSE 8080
 
 # Command to start the Vite preview
-CMD ["bun", "run", "preview"]
+CMD ["npm", "run", "preview"]
